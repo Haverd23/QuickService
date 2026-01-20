@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using QUS.Users.Application;
 using QUS.Users.Data;
+using QUS.Users.Data.Repository;
+using QUS.Users.Domain.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

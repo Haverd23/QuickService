@@ -6,14 +6,16 @@ namespace QUS.Users.Domain.Models
     public class User
     {
         [Key]
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
         public Phone Phone { get; private set; }
 
+        protected User() { }
         public User(string name, string email, string phone)
         {
             IsValid(name, email);
+            Id = Guid.NewGuid();
             Name = name;
             Email = email;
             Phone = new Phone(phone);
