@@ -1,4 +1,6 @@
-﻿using QUS.Users.Domain.Interfaces;
+﻿
+
+using QUS.Users.Domain.Interfaces;
 using QUS.Users.Domain.Models;
 
 namespace QUS.Users.Data.Repository
