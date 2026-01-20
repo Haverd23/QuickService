@@ -1,19 +1,24 @@
-﻿namespace QUS.Users.Domain.Models
+﻿using QUS.Users.Domain.ValueObjects;
+using System.ComponentModel.DataAnnotations;
+
+namespace QUS.Users.Domain.Models
 {
     public class User
     {
+        [Key]
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public string Name { get; private set; }
         public string Email { get; private set; }
-        public string Phone { get; private set; }
+        public Phone Phone { get; private set; }
 
         public User(string name, string email, string phone)
         {
-            IsValid(name, email, phone);
+            IsValid(name, email);
             Name = name;
             Email = email;
-            Phone = phone;
+            Phone = new Phone(phone);
         }
-        private void IsValid(string name, string email, string phone)
+        private void IsValid(string name, string email)
         {
             if(string.IsNullOrWhiteSpace(name))
             {
@@ -27,10 +32,7 @@
             {
                 throw new ArgumentException("Email inválido");
             }
-            if(phone.Length < 10)
-            {
-                throw new ArgumentException("Telefone inválido");
-            }
+          
 
         }
     }
