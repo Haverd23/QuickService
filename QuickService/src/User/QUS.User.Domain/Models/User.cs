@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace QUS.Users.Domain.Models
 {
-    public class User : Entity
+    public class User : Entity, IAggregateRoot
     {
         public string Name { get; private set; }
         public string Email { get; private set; }
