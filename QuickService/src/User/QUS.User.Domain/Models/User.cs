@@ -1,12 +1,11 @@
-﻿using QUS.Users.Domain.ValueObjects;
+﻿using QUS.Core.DomainObjects;
+using QUS.Users.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
 namespace QUS.Users.Domain.Models
 {
-    public class User
+    public class User : Entity
     {
-        [Key]
-        public Guid Id { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
         public Phone Phone { get; private set; }
@@ -15,7 +14,6 @@ namespace QUS.Users.Domain.Models
         public User(string name, string email, string phone)
         {
             IsValid(name, email);
-            Id = Guid.NewGuid();
             Name = name;
             Email = email;
             Phone = new Phone(phone);
