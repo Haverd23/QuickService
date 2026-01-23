@@ -1,5 +1,6 @@
 ﻿
 
+using QUS.Core.Data;
 using QUS.Users.Domain.Interfaces;
 using QUS.Users.Domain.Models;
 
@@ -12,11 +13,18 @@ namespace QUS.Users.Data.Repository
         {
             _context = context;
         }
-        public Task Add(User user)
+
+        public IUnityOfWork UnitOfWork => _context;
+
+        public async Task Add(User user)
         {
-           _context.Users.Add(user);
-           _context.SaveChanges();
-           return Task.CompletedTask;
+          await _context.Users.AddAsync(user);
+          
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
         }
     }
 }
