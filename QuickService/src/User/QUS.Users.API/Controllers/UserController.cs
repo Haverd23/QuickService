@@ -1,27 +1,29 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿
 using Microsoft.AspNetCore.Mvc;
+using QUS.Core.Mediator.Commands;
 using QUS.Users.API.DTOs;
-using QUS.Users.Application;
+using QUS.Users.Application.Commands;
 
 namespace QUS.Users.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly ICommandDispatcher _commandDispatcher;
 
-        public UserController(UserService userService)
+        public UserController(ICommandDispatcher commandDispatcher)
         {
-            _userService = userService;
+            _commandDispatcher = commandDispatcher;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO userDto)
         {
-             _userService.CreateUser(userDto.Name,userDto.Email,userDto.Phone);
-            return Created();
+             var command  = new CreateUserCommand(userDto.Name, userDto.Email, userDto.Phone);
+             var userId = await _commandDispatcher.DispatchAsync<CreateUserCommand, Guid>(command);
+             return CreatedAtAction(nameof(CreateUser), new { id = userId }, null);
+
         }
     }
 }

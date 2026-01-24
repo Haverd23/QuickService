@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QUS.Users.API.Extensions;
 using QUS.Users.Application;
 using QUS.Users.Data;
 using QUS.Users.Data.Repository;
@@ -10,9 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddDependencyInjection(builder.Configuration);
 
 var app = builder.Build();
 
