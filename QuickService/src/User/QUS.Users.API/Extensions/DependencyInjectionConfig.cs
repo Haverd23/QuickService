@@ -2,6 +2,7 @@
 using QUS.Core.Mediator.Commands;
 using QUS.Users.Application.Commands;
 using QUS.Users.Application.CommandsHandlers;
+using QUS.Users.Application.Services;
 using QUS.Users.Data;
 using QUS.Users.Data.Repository;
 using QUS.Users.Domain.Interfaces;
@@ -20,8 +21,9 @@ namespace QUS.Users.API.Extensions
 
             // Application
           services.AddScoped<ICommandHandler<CreateUserCommand, Guid>, CreateUserCommandHandler>();
+          services.AddScoped<ICommandDispatcher, CommandDispatcher>();
 
-           return services;
+            return services;
         }
     }
 }
