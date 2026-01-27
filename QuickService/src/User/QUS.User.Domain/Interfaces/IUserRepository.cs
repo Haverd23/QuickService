@@ -5,5 +5,6 @@ namespace QUS.Users.Domain.Interfaces
     public interface IUserRepository : IRepository<User>
     {
         Task Add(User user);
+        Task<User> GetById(Guid id);
     }
 }
