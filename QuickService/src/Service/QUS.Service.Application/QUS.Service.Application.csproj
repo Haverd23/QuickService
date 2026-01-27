@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\User\QUS.User.Domain\QUS.Users.Domain.csproj" />
+    <ProjectReference Include="..\QUS.Services.Domain\QUS.Services.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

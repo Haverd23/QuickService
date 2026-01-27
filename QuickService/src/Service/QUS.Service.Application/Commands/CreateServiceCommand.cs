@@ -8,8 +8,9 @@ namespace QUS.Service.Application.Commands
         public string Description { get; }
         public decimal Price { get; }
         public Guid ProviderId { get; }
-        public int Category { get; }
-        public CreateServiceCommand(string title, string description, decimal price, Guid providerId, int category)
+        public string Category { get; }
+        public CreateServiceCommand(string title, string description, decimal price,
+            Guid providerId, string category)
         {
             Title = title;
             Description = description;
@@ -17,5 +18,6 @@ namespace QUS.Service.Application.Commands
             ProviderId = providerId;
             Category = category;
         }
+        
     }
 }
