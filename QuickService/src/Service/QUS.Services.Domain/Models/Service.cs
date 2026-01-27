@@ -1,4 +1,5 @@
 ﻿using QUS.Core.DomainObjects;
+using QUS.Services.Domain.Enums;
 namespace QUS.Services.Domain.Models
 {
     public class Service : Entity, IAggregateRoot
@@ -7,8 +8,8 @@ namespace QUS.Services.Domain.Models
         public string Description { get; private set; }
         public decimal Price { get; private set; }
         public Guid ProviderId { get; private set; }
-        public string Category { get; private set; }
-        public Service(string title, string description, decimal price, Guid providerId, string category)
+        public Category Category { get; private set; }
+        public Service(string title, string description, decimal price, Guid providerId, Category category)
         {
             ServiceValidation(title, description, price);
             Title = title;
@@ -28,6 +29,15 @@ namespace QUS.Services.Domain.Models
         {
             TitleValidation(title);
             Title = title;
+        }
+        public void ChangeCategory(Category category)
+        {
+            if(!Enum.IsDefined(typeof(Category), category))
+                throw new Exception("Categoria inválida");
+
+            if(Category == category)
+                throw new Exception("A nova categoria deve ser diferente da atual");
+            Category = category;
         }
 
         private void DescriptionValidation(string description)
