@@ -2,12 +2,6 @@
 using QUS.Core.Data;
 using QUS.Services.Domain.Interfaces;
 using QUS.Services.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace QUS.Services.Data.Repository
 {
     public class ServiceRepository : IServiceRepository
