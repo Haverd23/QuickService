@@ -17,12 +17,11 @@ namespace QUS.Service.API.Extensions
             // Data
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddDbContext<ServiceDbContext>(options =>
-          options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             // Application
             services.AddScoped<ICommandHandler<CreateServiceCommand, Guid>, CreateServiceCommandHandler>();
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
-
 
             return services;
         }

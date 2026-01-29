@@ -1,4 +1,4 @@
-@QUS.Service.API_HostAddress = http://localhost:5292
+@QUS.Service.API_HostAddress = http://localhost:5161
 
 GET {{QUS.Service.API_HostAddress}}/weatherforecast/
 Accept: application/json
