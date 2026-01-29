@@ -17,7 +17,7 @@ namespace QUS.Service.API.Controllers
             _commandDispatcher = commandDispatcher;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateService([FromBody] ServiceDTO serviceDTO )
+        public async Task<IActionResult> Post([FromBody] ServiceDTO commandDTO)
         {
             var idString = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             if (!Guid.TryParse(idString, out Guid userId))
@@ -25,14 +25,15 @@ namespace QUS.Service.API.Controllers
                 return Unauthorized("Id do usuário inválido no token.");
             }
             var command = new CreateServiceCommand(
-                serviceDTO.Title,
-                serviceDTO.Description,
-                serviceDTO.Price,
+                commandDTO.Title,
+                commandDTO.Description,
+                commandDTO.Price,
                 userId,
-                serviceDTO.Category
+                commandDTO.Category
+                
             );
             var serviceId = await _commandDispatcher.DispatchAsync<CreateServiceCommand, Guid>(command);
-            return CreatedAtAction(nameof(CreateService), new { id = serviceId }, null);
+            return CreatedAtAction(nameof(Post), new { id = serviceId }, null);
         }
     }
 }
