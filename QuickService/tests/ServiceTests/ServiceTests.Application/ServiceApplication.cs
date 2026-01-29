@@ -1,7 +1,6 @@
 using Moq;
 using QUS.Core.Mediator.Commands;
 using QUS.Service.Application.Commands;
-using QUS.Service.Application.Interfaces;
 using QUS.Services.Application.CommandsHandlers;
 using QUS.Services.Domain.Interfaces;
 using QUS.Services.Domain.Models;
@@ -11,11 +10,9 @@ namespace ServiceTests.Application
     public class ServiceApplication
     {
         private readonly Mock<IServiceRepository> _serviceRepositoryMock;
-        private readonly Mock<IGetUserIdService> _getUserIdServiceMock;
         public ServiceApplication()
         {
             _serviceRepositoryMock = new Mock<IServiceRepository>();
-            _getUserIdServiceMock = new Mock<IGetUserIdService>();
         }
 
         [Fact(DisplayName = "Deve criar um service e retornar um ID")]
@@ -28,8 +25,7 @@ namespace ServiceTests.Application
             var category = "Pedreiro";
             var providerId = Guid.NewGuid();
             var command = new CreateServiceCommand(title, description, price,providerId, category);
-            var commandHandler = new CreateServiceCommandHandler(_serviceRepositoryMock.Object,
-                _getUserIdServiceMock.Object);
+            var commandHandler = new CreateServiceCommandHandler(_serviceRepositoryMock.Object);
 
             _serviceRepositoryMock.Setup(x => x.UnitOfWork.Commit()).
                 ReturnsAsync(true);
