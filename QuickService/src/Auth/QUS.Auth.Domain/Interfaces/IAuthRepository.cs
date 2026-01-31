@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QUS.Auth.Domain.Interfaces
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IAuthRepository : IRepository<User>
     {
         Task AddAsync(User user);
     }
