@@ -1,4 +1,5 @@
-﻿using QUS.Auth.Domain.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using QUS.Auth.Domain.Interfaces;
 using QUS.Auth.Domain.Models;
 using QUS.Core.Data;
 using System;
@@ -23,10 +24,19 @@ namespace QUS.Auth.Data.Repository
         {
             await _context.UsersAuth.AddAsync(user);
         }
+        public async Task<User?> GetByEmailAsync(string email)
+        {
+           return await _context.UsersAuth.Where(e => e.Email.Entrada == email).
+                FirstOrDefaultAsync();
+
+           
+        }
 
         public void Dispose()
         {
             _context?.Dispose();
         }
+
+      
     }
 }

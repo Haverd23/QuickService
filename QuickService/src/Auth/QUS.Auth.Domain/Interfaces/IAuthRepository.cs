@@ -11,5 +11,6 @@ namespace QUS.Auth.Domain.Interfaces
     public interface IAuthRepository : IRepository<User>
     {
         Task AddAsync(User user);
+        Task<User?> GetByEmailAsync(string email);
     }
 }
