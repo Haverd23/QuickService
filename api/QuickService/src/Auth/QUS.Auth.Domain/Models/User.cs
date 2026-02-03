@@ -1,4 +1,5 @@
-﻿using QUS.Auth.Domain.ValueObjects;
+﻿using QUS.Auth.Domain.DomainEvents;
+using QUS.Auth.Domain.ValueObjects;
 using QUS.Core.DomainObjects;
 
 namespace QUS.Auth.Domain.Models
@@ -13,6 +14,7 @@ namespace QUS.Auth.Domain.Models
             Email = new Email(email);
             PasswordValidade(password);
             Password = password;
+            AddDomainEvent(new UserCreateEvent(Id, Email.Entrada));
         }
 
         public static void PasswordValidade(string password)

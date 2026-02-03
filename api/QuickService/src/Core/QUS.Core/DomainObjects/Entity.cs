@@ -18,6 +18,11 @@
         {
             return _domainEvents ?? Enumerable.Empty<IDomainEvent>();
         }
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
+        }
+
 
     }
 }
