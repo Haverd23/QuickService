@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QUS.Auth.Domain.Models;
 using QUS.Core.Data;
+using QUS.Core.DomainObjects;
 
 namespace QUS.Auth.Data
 {
     public class AuthDbContext : DbContext, IUnityOfWork
     {
-        public AuthDbContext(DbContextOptions<AuthDbContext> options) : base(options)
+        private readonly IDomainEventDispatcher _domainEventDispatcher;
+        public AuthDbContext(DbContextOptions<AuthDbContext> options, IDomainEventDispatcher
+            domainEventDispatcher) : base(options)
         {
+            _domainEventDispatcher = domainEventDispatcher;
         }
         public DbSet<User> UsersAuth { get; set; }
 
@@ -21,15 +25,22 @@ namespace QUS.Auth.Data
 
         public async Task<bool> Commit()
         {
-            try
+            var domainEvents = ChangeTracker.Entries<Entity>()
+                .SelectMany(e => e.Entity.GetDomainEvents())
+                .ToList();
+
+            var result = await SaveChangesAsync();
+
+            await _domainEventDispatcher.DispatchEventsAsync(domainEvents);
+
+            foreach (var entry in ChangeTracker.Entries<Entity>())
             {
-                var result = await SaveChangesAsync();
-                return result > 0;
+                entry.Entity.ClearDomainEvents();
             }
-            catch
-            {
-                return false;
-            }
+
+
+            return result > 0;
         }
+
     }
 }
