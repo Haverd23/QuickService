@@ -3,12 +3,14 @@ namespace QUS.Auth.Domain.DomainEvents
 {
     public class UserCreateEvent : IDomainEvent
     {
-        public Guid AuthId { get; }
         public string Email { get; }
         public DateTime OccurredOn { get; } = DateTime.UtcNow;
-        public UserCreateEvent(Guid authId, string email)
+
+        public Guid AggregateId { get; }
+
+        public UserCreateEvent(Guid aggregateId, string email)
         {
-            AuthId = authId;
+            AggregateId = aggregateId;
             Email = email;
         }
     }
