@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\QUS.Auth.Application\QUS.Auth.Application.csproj" />
     <ProjectReference Include="..\QUS.Auth.Data\QUS.Auth.Data.csproj" />
     <ProjectReference Include="..\QUS.Auth.Domain\QUS.Auth.Domain.csproj" />
