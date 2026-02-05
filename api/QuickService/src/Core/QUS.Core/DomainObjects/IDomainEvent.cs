@@ -9,5 +9,6 @@ namespace QUS.Core.DomainObjects
     public interface IDomainEvent 
     {
         public DateTime OccurredOn { get; }
+        public Guid AggregateId { get; }
     }
 }
