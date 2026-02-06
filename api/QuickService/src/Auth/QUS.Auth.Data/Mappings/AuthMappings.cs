@@ -16,14 +16,14 @@ namespace QUS.Auth.Data.Mappings
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Email)
-                .IsRequired()
-                .HasConversion(
-                    email => email.Entrada,
-                    address => new Email(address)
-                );
+            builder.OwnsOne(u => u.Email, email =>
+            {
+                email.Property(e => e.Entrada)
+                     .IsRequired();
+            });
 
             builder.Property(x => x.Password)
+                .HasColumnType("varchar(1024)")
                 .IsRequired();
 
         }

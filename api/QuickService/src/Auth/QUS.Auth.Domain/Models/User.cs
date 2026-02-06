@@ -6,6 +6,7 @@ namespace QUS.Auth.Domain.Models
 {
     public class User : Entity, IAggregateRoot
     {
+        protected User() { }
         public Email Email { get; private set; }
         public string Password { get; private set; }
 
