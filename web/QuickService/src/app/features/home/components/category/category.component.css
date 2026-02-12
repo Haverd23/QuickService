@@ -1,0 +1,20 @@
+.category {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.4rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.category:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0,0,0,.08);
+}
+
+.category span {
+  display: block;
+  margin-top: .6rem;
+  font-weight: 600;
+}

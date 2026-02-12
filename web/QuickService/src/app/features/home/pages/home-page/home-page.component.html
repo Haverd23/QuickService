@@ -18,39 +18,20 @@
   <h2 class="section-title">Categorias populares</h2>
 
   <div class="categories">
-    <div class="category">🔧<span>Mecânica</span></div>
-    <div class="category">🎨<span>Pintura</span></div>
-    <div class="category">💡<span>Elétrica</span></div>
-    <div class="category">💻<span>TI</span></div>
-    <div class="category">🚿<span>Hidráulica</span></div>
-    <div class="category">🧹<span>Limpeza</span></div>
+    
+    <app-category [icon]="'🔧'" [title]="'Mecânica'"></app-category>
+    <app-category [icon]="'🎨'" [title]="'Pintura'"></app-category>
+    <app-category [icon]="'💡'" [title]="'Elétrica'"></app-category>
+    <app-category [icon]="'💻'" [title]="'TI'"></app-category>
+    <app-category [icon]="'🚿'" [title]="'Hidráulica'"></app-category>
+    <app-category [icon]="'🧹'" [title]="'Limpeza'"></app-category>
   </div>
 
-  <h2 class="section-title">Profissionais recomendados</h2>
+  <h2 class="section-title">Últimos Serviços</h2>
 
   <div class="cards">
-    <div class="card">
-      <h3>João Silva</h3>
-      <p>
-        Manutenção automotiva e diagnóstico completo, atendimento rápido.
-      </p>
-      <button>Solicitar serviço</button>
-    </div>
-
-    <div class="card">
-      <h3>Ana Souza</h3>
-      <p>
-        Pintura residencial com acabamento profissional e preço justo.
-      </p>
-      <button>Solicitar serviço</button>
-    </div>
-
-    <div class="card">
-      <h3>Carlos Tech</h3>
-      <p>
-        Suporte técnico, redes e soluções digitais para sua casa.
-      </p>
-      <button>Solicitar serviço</button>
-    </div>
+    <app-cards [cardTitle]="'Manutenção automotiva'" [cardDescription]="'Manutenção automotiva e diagnóstico completo, atendimento rápido.'"></app-cards>
+    <app-cards [cardTitle]="'Pintura residencial'" [cardDescription]="'Pintura de interiores e exteriores, acabamento de alta qualidade.'"></app-cards>
+    <app-cards [cardTitle]="'Reparos elétricos'" [cardDescription]="'Instalação e reparo de sistemas elétricos, segurança garantida.'"></app-cards>
   </div>
 </main>
