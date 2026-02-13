@@ -39,3 +39,6 @@
   font-weight: 600;
   cursor: pointer;
 }
+.card button:hover {
+  background: var(--accent);
+}
