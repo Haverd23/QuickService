@@ -1,13 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary: #2563eb;
-  --primary-soft: #eff6ff;
-  --accent: #16a34a;
+   --primary: #000000;
+  --accent: #4f46e5;
+  --gray: #f4f4f7;
   --text: #0f172a;
-  --muted: #475569;
-  --border: #e5e7eb;
   --bg: #f8fafc;
-  --card: #ffffff;
 }
 
 * {
@@ -20,4 +17,5 @@
 body {
   background: var(--bg);
   color: var(--text);
+
 }

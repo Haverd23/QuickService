@@ -1,0 +1,50 @@
+<div class="split-screen">
+  
+  <!-- LADO ESQUERDO -->
+  <div class="left-pane">
+    <div class="brand-top">QuickService</div>
+
+    <div class="hero-text">
+      <h1 [innerHTML]="heroHtml"></h1>
+    </div>
+
+    <div class="floating-card">
+      <img [src]="imageSrc" alt="Imagem">
+    </div>
+  </div>
+
+  <!-- LADO DIREITO -->
+  <div class="right-pane">
+    <div class="login-form">
+
+      <div class="intro">
+        <h2>{{ heading }}</h2>
+        <p>{{ subtitle }}</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <div class="input-group" *ngFor="let field of fields">
+          <input 
+            [type]="field.type"
+            [formControlName]="field.name"
+            required
+          >
+          <label>{{ field.label }}</label>
+        </div>
+
+        <button type="submit" class="glow-button">
+          {{ buttonText }}
+        </button>
+
+      </form>
+
+      <div class="create-account">
+        {{ linkText }}
+        <a [routerLink]="linkUrl">{{ linkButtonText }}</a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
