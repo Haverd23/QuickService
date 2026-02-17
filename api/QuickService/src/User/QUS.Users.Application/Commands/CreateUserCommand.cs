@@ -12,9 +12,11 @@ namespace QUS.Users.Application.Commands
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
+        public Guid AuthId { get; set; }
 
-        public CreateUserCommand(string name, string email, string phone)
+        public CreateUserCommand(Guid authId,string name, string email, string phone)
         {
+            AuthId = authId;
             Name = name;
             Email = email;
             Phone = phone;
