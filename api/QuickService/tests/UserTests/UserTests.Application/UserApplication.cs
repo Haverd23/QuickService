@@ -21,8 +21,9 @@ namespace UserTests.Application
             var name = "João";
             var email = "joao123@gmail.com";
             var phone = "11999999999";
+            var authId = Guid.NewGuid();
 
-            var command = new CreateUserCommand(name, email, phone);
+            var command = new CreateUserCommand(authId,name, email, phone);
             var commandHandler = new CreateUserCommandHandler(_userRepositoryMock.Object);
 
             _userRepositoryMock.Setup(x => x.UnitOfWork.Commit()).
