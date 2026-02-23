@@ -10,6 +10,8 @@
     <ProjectReference Include="..\..\Auth\QUS.Auth.Application\QUS.Auth.Application.csproj" />
     <ProjectReference Include="..\..\Core\QUS.Core\QUS.Core.csproj" />
     <ProjectReference Include="..\..\User\QUS.Users.Application\QUS.Users.Application.csproj" />
+    <ProjectReference Include="..\QUS.Workflows.Application\QUS.Workflows.Application\QUS.Workflows.Application.csproj" />
+    <ProjectReference Include="..\QUS.Workflows.Data\QUS.Workflows.Data.csproj" />
   </ItemGroup>
 
 </Project>

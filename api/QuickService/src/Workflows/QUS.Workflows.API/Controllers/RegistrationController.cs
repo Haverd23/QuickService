@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using QUS.Core.Mediator.Commands;
 using QUS.Workflows.API.DTOs;
+using QUS.Workflows.Application.Registration.Commands;
 
 namespace QUS.Workflows.API.Controllers
 {
@@ -16,6 +17,16 @@ namespace QUS.Workflows.API.Controllers
         {
             _dispatcher = dispatcher;
         }
-       
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegistrationDTO registrationDTO)
+        {
+            var command = new AuthCreateCommand(registrationDTO.Email,
+                registrationDTO.Password);
+            var authId = await _dispatcher.DispatchAsync<AuthCreateCommand, Guid>(command);
+
+            return Ok();
+        }
+
     }
 }
