@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using QUS.Auth.Application.Commands;
 using QUS.Auth.Application.CommandsHandlers;
 using QUS.Auth.Application.Interfaces;
+using QUS.Auth.Application.Kafka.Events;
+using QUS.Auth.Application.Kafka.EventsHandlers;
 using QUS.Auth.Application.Services;
 using QUS.Auth.Data;
 using QUS.Auth.Data.Messaging;
@@ -10,6 +12,7 @@ using QUS.Auth.Data.Messaging.Kafka;
 using QUS.Auth.Data.Repository;
 using QUS.Auth.Domain.Interfaces;
 using QUS.Core.DomainObjects;
+using QUS.Core.IntegrationEvent;
 using QUS.Core.Mediator.Commands;
 using QUS.Core.Message;
 
@@ -53,6 +56,24 @@ namespace QUS.Auth.API.Extensions
                     MessageTimeoutMs = producerSection.GetValue<int>("MessageTimeoutMs")
                 };
             });
+
+            services.AddSingleton<IKafkaConsumer, KafkaConsumer>();
+            services.AddSingleton<GenericKafkaDispatcher>();
+            services.AddScoped<IIntegrationEventHandler<AuthCreateEvent>, AuthCreateEventHandler>();
+            services.AddSingleton(sp =>
+            {
+                var configuration = sp.GetRequiredService<IConfiguration>();
+
+                return new ConsumerConfig
+                {
+                    BootstrapServers = configuration["Kafka:BootstrapServers"],
+                    GroupId = "auth-consumer-group",
+                    AutoOffsetReset = AutoOffsetReset.Earliest,
+                    EnableAutoCommit = false
+                };
+            });
+            services.AddHostedService<KafkaConsumerBackground>();
+
 
             return services;
 

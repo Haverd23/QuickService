@@ -14,10 +14,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\QUS.Core\QUS.Core.csproj" />
+    <ProjectReference Include="..\QUS.Auth.Application\QUS.Auth.Application.csproj" />
     <ProjectReference Include="..\QUS.Auth.Domain\QUS.Auth.Domain.csproj" />
   </ItemGroup>
 
