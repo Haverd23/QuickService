@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
+import { RegistrationService } from '../../../../core/workflows/registration/service/registration.service';
 
 interface FormField {
   type: string;
@@ -33,7 +34,8 @@ export class AuthPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private registrationService: RegistrationService
   ) {}
 
   ngOnInit(): void {
@@ -86,8 +88,23 @@ export class AuthPageComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.valid) {
-      console.log(this.form.value);
-    }
+  if (this.form.invalid) return;
+
+  const type = this.route.snapshot.data['type'];
+
+  if (type === 'register') {
+    const formValue = this.form.value;
+
+    this.registrationService.register(formValue).subscribe({
+      next: (response) => {
+        console.log('Usuário registrado com sucesso!', response);
+      },
+      error: (err) => {
+        console.error('Erro ao registrar', err);
+      }
+    });
+  } else {
+    console.log('Login:', this.form.value);
   }
+}
 }

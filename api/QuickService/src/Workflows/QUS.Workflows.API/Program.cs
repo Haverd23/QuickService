@@ -7,6 +7,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencyInjection(builder.Configuration);
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CORS", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+
 builder.Services.AddControllers();
 
 
@@ -16,7 +29,9 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
+app.UseCors("CORS");
+
+
 
 app.UseAuthorization();
 
