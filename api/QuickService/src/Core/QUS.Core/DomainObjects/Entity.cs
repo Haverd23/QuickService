@@ -10,6 +10,10 @@
         {
             Id = Guid.NewGuid();
         }
+        protected Entity(Guid id)
+        {
+            Id = id;
+        }
         public void AddDomainEvent(IDomainEvent domainEvent)
         {
             _domainEvents.Add(domainEvent);

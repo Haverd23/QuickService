@@ -30,7 +30,7 @@ namespace QUS.Auth.Application.CommandsHandlers
                 throw new Exception("Email already exists");
             }
            var senhaHash = _passwordEncryption.PasswordHash(command.Password);
-           var user = new User(command.Email, senhaHash);
+           var user = new User(Guid.NewGuid(),command.Email, senhaHash);
            await _authRepository.AddAsync(user);
            var success = await _authRepository.UnitOfWork.Commit();
             if (!success)
