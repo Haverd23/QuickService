@@ -31,7 +31,7 @@ namespace QUS.Auth.Application.Kafka.EventsHandlers
                 throw new Exception("Email already exists");
             }
             var senhaHash = _passwordEncryption.PasswordHash(evento.Password);
-            var user = new User(evento.EventId,evento.Email, senhaHash);
+            var user = new User(evento.AuthId,evento.Email, senhaHash);
             await _authRepository.AddAsync(user);
             var success = await _authRepository.UnitOfWork.Commit();
             if (!success)

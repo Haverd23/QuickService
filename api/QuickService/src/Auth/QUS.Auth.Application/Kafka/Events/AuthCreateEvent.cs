@@ -10,6 +10,6 @@ namespace QUS.Auth.Application.Kafka.Events
     {
         public string Email { get; set; }
         public string Password { get; set; }
-        public Guid EventId { get; set; }
+        public Guid AuthId { get; set; }
     }
 }

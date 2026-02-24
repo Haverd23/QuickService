@@ -10,7 +10,7 @@ namespace QUS.Auth.Domain.Models
         public Email Email { get; private set; }
         public string Password { get; private set; }
 
-        public User(Guid authId,string email, string password)
+        public User(Guid authId,string email, string password): base(authId)
         {
             Email = new Email(email);
             PasswordValidade(password);
