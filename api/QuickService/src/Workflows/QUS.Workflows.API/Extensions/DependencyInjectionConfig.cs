@@ -15,6 +15,8 @@ namespace QUS.Workflows.API.Extensions
         {
             services.AddScoped<ICommandHandler<AuthCreateCommand, Guid>,
                 AuthCreateCommandHandler>();
+            services.AddScoped<ICommandHandler<UserCreateCommand, Guid>,
+                UserCreateCommandHandler>();
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddSingleton<IKafkaProducer, KafkaProducer>();
             services.AddSingleton<IEventBus, KafkaEventBus>();

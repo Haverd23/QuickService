@@ -18,7 +18,7 @@ namespace UserTests.Domain
             var phone = "11987654321";
 
             // Act
-            var user = new User(name, email, phone);
+            var user = new User(name, email, phone, Guid.NewGuid());
 
             // Assert
             Assert.NotNull(user);
@@ -36,7 +36,7 @@ namespace UserTests.Domain
             var phone = "11987654321";
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => new User(name, email, phone));
+            var exception = Assert.Throws<ArgumentException>(() => new User(name, email, phone, Guid.NewGuid()));
             Assert.Equal("Email inválido", exception.Message);
         }
         [Fact(DisplayName = "Criar User com telefone inválido lança exceção")]
@@ -48,7 +48,7 @@ namespace UserTests.Domain
             var phone = "123"; // Telefone inválido
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => new User(name, email, phone));
+            var exception = Assert.Throws<ArgumentException>(() => new User(name, email, phone, Guid.NewGuid()));
             Assert.Equal("Telefone inválido", exception.Message);
 
         }
@@ -61,7 +61,7 @@ namespace UserTests.Domain
             var phone = "11987654321";
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => new User(name, email, phone));
+            var exception = Assert.Throws<ArgumentException>(() => new User(name, email, phone, Guid.NewGuid()));
             Assert.Equal("Nome não pode ser vazio", exception.Message);
         }
     }

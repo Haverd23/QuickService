@@ -32,24 +32,24 @@ namespace QUS.Auth.Data.Messaging.Kafka
             _dispatcher = dispatcher;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Console.WriteLine("🔥 KafkaConsumerBackground iniciado");
 
-            await _consumer.SubscribeAsync(
-                Topic,
-                async (key, value) =>
-                {
-                    Console.WriteLine($"📩 Mensagem recebida: {value}");
+            Task.Run(async () =>
+            {
+                await _consumer.SubscribeAsync(
+                    Topic,
+                    async (key, value) =>
+                    {
+                        Console.WriteLine($"📩 Mensagem recebida: {value}");
+                        using var scope = _serviceProvider.CreateScope();
+                        await _dispatcher.DispatchAsync(Topic, value, scope);
+                    },
+                    stoppingToken);
+            }, stoppingToken);
 
-                    using var scope = _serviceProvider.CreateScope();
-
-                    await _dispatcher.DispatchAsync(
-                        Topic,
-                        value,
-                        scope);
-                },
-                stoppingToken);
+            return Task.CompletedTask; 
         }
     }
 }
