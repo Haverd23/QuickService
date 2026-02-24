@@ -21,6 +21,7 @@ namespace QUS.Workflows.Application.Registration.CommandsHandlers
         public async Task<Guid> HandleAsync(AuthCreateCommand command)
         {
             var applicationEvent = new AuthCreateEvent(
+                command.AuthId,
                 command.Email,
                 command.Password
             );
@@ -35,7 +36,7 @@ namespace QUS.Workflows.Application.Registration.CommandsHandlers
                 payload
             );
 
-            return applicationEvent.EventId;
+            return applicationEvent.AuthId;
         }
     }
 }

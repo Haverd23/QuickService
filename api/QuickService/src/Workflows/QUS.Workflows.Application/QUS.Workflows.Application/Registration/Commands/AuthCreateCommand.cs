@@ -10,12 +10,14 @@ namespace QUS.Workflows.Application.Registration.Commands
 {
     public class AuthCreateCommand : ICommand<Guid>
     {
+        public Guid AuthId { get; }
         public string Email { get;  }
         public string Password { get;  }
-        public AuthCreateCommand(string email, string password)
+        public AuthCreateCommand(Guid authId, string email, string password)
         {
             Email = email;
             Password = password;
+            AuthId = authId;
         }
     }
 }

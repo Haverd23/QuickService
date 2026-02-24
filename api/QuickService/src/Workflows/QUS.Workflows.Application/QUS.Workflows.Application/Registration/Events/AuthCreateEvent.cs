@@ -9,11 +9,13 @@ namespace QUS.Workflows.Application.Registration.Events
 {
     public class AuthCreateEvent : ApplicationEvent
     {
+        public Guid AuthId { get; }
         public string Email { get; }
         public string Password { get;}
 
-        public AuthCreateEvent(string email, string password)
+        public AuthCreateEvent(Guid authId,string email, string password)
         {
+            AuthId = authId;    
             Email = email;
             Password = password;
         }
