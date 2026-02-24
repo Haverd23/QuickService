@@ -9,14 +9,16 @@ namespace QUS.Users.Domain.Models
         public string Name { get; private set; }
         public string Email { get; private set; }
         public Phone Phone { get; private set; }
+        public Guid AuthId { get; private set; }
 
         protected User() { }
-        public User(string name, string email, string phone)
+        public User(string name, string email, string phone, Guid authId)
         {
             IsValid(name, email);
             Name = name;
             Email = email;
             Phone = new Phone(phone);
+            AuthId = authId;
         }
         private void IsValid(string name, string email)
         {

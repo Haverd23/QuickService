@@ -20,7 +20,7 @@ namespace QUS.Users.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO userDto)
         {
-             var command  = new CreateUserCommand(userDto.Name, userDto.Email, userDto.Phone);
+             var command  = new CreateUserCommand(Guid.NewGuid(),userDto.Name, userDto.Email, userDto.Phone);
              var userId = await _commandDispatcher.DispatchAsync<CreateUserCommand, Guid>(command);
              return CreatedAtAction(nameof(CreateUser), new { id = userId }, null);
 

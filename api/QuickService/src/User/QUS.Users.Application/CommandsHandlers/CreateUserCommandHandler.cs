@@ -19,7 +19,7 @@ namespace QUS.Users.Application.CommandsHandlers
         }
         public async Task<Guid> HandleAsync(CreateUserCommand command)
         {
-            var user = new User(command.Name, command.Email, command.Phone);
+            var user = new User(command.Name, command.Email, command.Phone, Guid.NewGuid());
             await _userRepository.Add(user);
             var result = await _userRepository.UnitOfWork.Commit();
             if(!result)
