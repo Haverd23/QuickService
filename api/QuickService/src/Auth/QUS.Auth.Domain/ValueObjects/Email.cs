@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QUS.Core.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace QUS.Auth.Domain.ValueObjects
         public Email(string entrada)
         {
             if (!EhValido(entrada))
-                throw new Exception("Email inválido.");
+                throw new AppException("Email inválido.", 400);
 
             Entrada = entrada;
         }

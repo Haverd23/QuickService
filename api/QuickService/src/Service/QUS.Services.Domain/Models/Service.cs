@@ -1,4 +1,5 @@
 ﻿using QUS.Core.DomainObjects;
+using QUS.Core.Exceptions;
 using QUS.Services.Domain.Enums;
 namespace QUS.Services.Domain.Models
 {
@@ -21,9 +22,9 @@ namespace QUS.Services.Domain.Models
         private void TitleValidation(string title)
         {
             if (string.IsNullOrEmpty(title))
-                throw new Exception("O Título não pode ser vazio");
+                throw new AppException("O Título não pode ser vazio",400);
             if (title.Length < 3)
-                throw new Exception("O Título deve possuir mais que 3 caracteres");
+                throw new AppException("O Título deve possuir mais que 3 caracteres", 400);
         }
         public void ChangeTitle(string title)
         {
@@ -33,19 +34,19 @@ namespace QUS.Services.Domain.Models
         public void ChangeCategory(Category category)
         {
             if(!Enum.IsDefined(typeof(Category), category))
-                throw new Exception("Categoria inválida");
+                throw new AppException("Categoria inválida", 400);
 
             if(Category == category)
-                throw new Exception("A nova categoria deve ser diferente da atual");
+                throw new AppException("A nova categoria deve ser diferente da atual", 400);
             Category = category;
         }
 
         private void DescriptionValidation(string description)
         {
             if (string.IsNullOrEmpty(description))
-                throw new Exception("A Descrição não pode ser vazia");
+                throw new AppException("A Descrição não pode ser vazia", 400);
             if (description.Length < 10)
-                throw new Exception("A Descrição deve possuir mais que 10 caracteres");
+                throw new AppException("A Descrição deve possuir mais que 10 caracteres", 400);
         }
         public void ChangeDescription(string description)
         {
@@ -55,7 +56,7 @@ namespace QUS.Services.Domain.Models
         private void PriceValidation(decimal price)
         {
             if (price < 0)
-                throw new Exception("O Preço não pode ser negativo");
+                throw new AppException("O Preço não pode ser negativo",400);
         }
         public void ChangePrice(decimal price)
         {

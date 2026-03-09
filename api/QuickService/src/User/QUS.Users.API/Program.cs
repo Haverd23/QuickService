@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QUS.Core.Exceptions;
 using QUS.Users.API.Extensions;
 using QUS.Users.Application;
 using QUS.Users.Data;
@@ -14,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddDependencyInjection(builder.Configuration);
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
 
 
 

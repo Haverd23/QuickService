@@ -22,14 +22,9 @@ namespace QUS.Users.Data.Repository
           await _context.Users.AddAsync(user);
           
         }
-        public async Task<User> GetById(Guid id)
+        public async Task<User?> GetById(Guid id)
         {
-           var user = await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
-           if(user == null)
-           {
-            throw new Exception($"User with id {id} not found.");
-            }
-           return user;
+          return await _context.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
         }
         public async Task<User?> GetByEmail(string email)
         {

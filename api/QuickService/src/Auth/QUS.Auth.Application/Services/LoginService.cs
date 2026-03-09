@@ -1,5 +1,6 @@
 ﻿using QUS.Auth.Application.Interfaces;
 using QUS.Auth.Domain.Interfaces;
+using QUS.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,11 @@ namespace QUS.Auth.Application.Services
             var user = await _authRepository.GetByEmailAsync(email);
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new AppException("User not found",404);
             }
             if(!_passwordEncryption.PasswordCheck(password, user.Password))
             {
-                throw new Exception("Invalid password");
+                throw new AppException("Invalid password",400);
             }
             return await _tokenJWT.TokenGenerate(user);
         }

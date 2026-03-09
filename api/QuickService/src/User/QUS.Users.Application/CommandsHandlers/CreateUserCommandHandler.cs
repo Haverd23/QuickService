@@ -1,4 +1,5 @@
-﻿using QUS.Core.Mediator.Commands;
+﻿using QUS.Core.Exceptions;
+using QUS.Core.Mediator.Commands;
 using QUS.Users.Application.Commands;
 using QUS.Users.Domain.Interfaces;
 using QUS.Users.Domain.Models;
@@ -24,7 +25,7 @@ namespace QUS.Users.Application.CommandsHandlers
             var result = await _userRepository.UnitOfWork.Commit();
             if(!result)
             {
-                throw new Exception("Error creating user");
+                throw new AppException("Error creating user",400);
             }
             return user.Id;
         }
