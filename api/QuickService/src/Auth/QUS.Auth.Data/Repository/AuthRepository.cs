@@ -28,8 +28,16 @@ namespace QUS.Auth.Data.Repository
         {
            return await _context.UsersAuth.Where(e => e.Email.Entrada == email).
                 FirstOrDefaultAsync();
+        }
+        public async Task DeleteAsync(Guid user)
+        {
+            var userToDelete = 
+                await _context.UsersAuth.FirstOrDefaultAsync(u => u.Id == user);
+            if (userToDelete != null)
+                {
+                _context.UsersAuth.Remove(userToDelete);
+            }
 
-           
         }
 
         public void Dispose()
@@ -37,6 +45,6 @@ namespace QUS.Auth.Data.Repository
             _context?.Dispose();
         }
 
-      
+       
     }
 }

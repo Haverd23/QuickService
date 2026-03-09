@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QUS.Workflows.Application.Events
+namespace QUS.Core.IntegrationEvent
 {
     public interface IApplicationEvent
     {

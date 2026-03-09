@@ -3,27 +3,32 @@ using QUS.Auth.Application.Kafka.Events;
 using QUS.Auth.Domain.Interfaces;
 using QUS.Auth.Domain.Models;
 using QUS.Core.IntegrationEvent;
+using QUS.Core.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace QUS.Auth.Application.Kafka.EventsHandlers
 {
-    public class AuthCreateEventHandler: IIntegrationEventHandler<AuthCreateEvent>
+    public class AuthCreateEventHandler: IIntegrationEventHandler<RegistrationEvent>
 
     {
         private readonly IAuthRepository _authRepository;
         private readonly IPasswordEncryption _passwordEncryption;
+        private readonly IEventBus _bus;
 
-        public AuthCreateEventHandler(IAuthRepository authRepository, IPasswordEncryption passwordEncryption)
+        public AuthCreateEventHandler(IAuthRepository authRepository,
+            IPasswordEncryption passwordEncryption, IEventBus bus)
         {
             _authRepository = authRepository;
             _passwordEncryption = passwordEncryption;
+            _bus = bus;
         }
 
-        public  async Task HandleAsync(AuthCreateEvent @evento)
+        public  async Task HandleAsync(RegistrationEvent @evento)
         {
             var emailExists = await _authRepository.GetByEmailAsync(evento.Email);
             if (emailExists != null)
@@ -38,6 +43,19 @@ namespace QUS.Auth.Application.Kafka.EventsHandlers
             {
                 throw new Exception("Error saving user");
             }
+            var authCreatedEvent = new AuthCreatedEvent(evento.AuthId,evento.Email,evento.Name,evento.Phone);
+            var topic = authCreatedEvent.EventType;
+
+            var payload = JsonSerializer.Serialize(authCreatedEvent);
+
+            await _bus.PublishAsync(
+                topic,
+                authCreatedEvent.EventId.ToString(),
+                payload
+            );
+
+         
+
         }
     }
 }

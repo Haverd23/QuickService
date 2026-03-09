@@ -29,9 +29,28 @@ namespace QUS.Users.API.Extensions
           services.AddScoped<ICommandHandler<CreateUserCommand, Guid>, CreateUserCommandHandler>();
           services.AddScoped<ICommandDispatcher, CommandDispatcher>();
 
+            services.AddSingleton<IEventBus, KafkaEventBus>();
+            services.AddSingleton<IKafkaProducer, KafkaProducer>();
+
             services.AddSingleton<IKafkaConsumer, KafkaConsumer>();
             services.AddSingleton<GenericKafkaDispatcher>();
-            services.AddScoped<IIntegrationEventHandler<UserCreateEvent>, UserCreateEventHandler>();
+            
+            services.AddScoped<IIntegrationEventHandler<AuthCreatedEvent>, UserCreateEventHandler>();
+            services.AddSingleton(sp =>
+            {
+                var kafkaSection = configuration.GetSection("Kafka");
+                var producerSection = kafkaSection.GetSection("Producer");
+
+                return new ProducerConfig
+                {
+                    BootstrapServers = kafkaSection["BootstrapServers"],
+                    Acks = Acks.All,
+                    EnableIdempotence = producerSection.GetValue<bool>("EnableIdempotence"),
+                    LingerMs = producerSection.GetValue<int>("LingerMs"),
+                    MessageTimeoutMs = producerSection.GetValue<int>("MessageTimeoutMs")
+                };
+            });
+
             services.AddSingleton(sp =>
             {
                 var configuration = sp.GetRequiredService<IConfiguration>();

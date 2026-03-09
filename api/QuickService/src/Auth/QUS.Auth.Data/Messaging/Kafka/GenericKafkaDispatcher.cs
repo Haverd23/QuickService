@@ -49,6 +49,7 @@ namespace QUS.Auth.Data.Messaging.Kafka
                 .MakeGenericType(eventType);
 
             var handler = scope.ServiceProvider.GetService(handlerType);
+            Console.WriteLine($"📩 Dispatching evento: {topic}");
 
             if (handler == null)
             {

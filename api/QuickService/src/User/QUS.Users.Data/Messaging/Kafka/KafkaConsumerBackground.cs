@@ -15,7 +15,8 @@ namespace QUS.Users.Data.Messaging.Kafka
         private readonly IServiceProvider _serviceProvider;
         private readonly GenericKafkaDispatcher _dispatcher;
 
-        private const string Topic = "UserCreateEvent";
+        private const string Topic = "AuthCreatedEvent";
+    
 
         public KafkaConsumerBackground(
             IKafkaConsumer consumer,
@@ -27,24 +28,24 @@ namespace QUS.Users.Data.Messaging.Kafka
             _dispatcher = dispatcher;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Console.WriteLine("🔥 KafkaConsumerBackground iniciado");
 
-            Task.Run(async () =>
+            var task1 = Task.Run(async () =>
             {
                 await _consumer.SubscribeAsync(
-                    Topic,
-                    async (key, value) =>
-                    {
-                        Console.WriteLine($"📩 Mensagem recebida: {value}");
-                        using var scope = _serviceProvider.CreateScope();
-                        await _dispatcher.DispatchAsync(Topic, value, scope);
-                    },
-                    stoppingToken);
+                new[] { Topic },
+                async (topic, value) =>
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    await _dispatcher.DispatchAsync(topic, value, scope);
+                },
+                stoppingToken);
             }, stoppingToken);
 
-            return Task.CompletedTask; 
+
+            await Task.WhenAll(task1);
         }
     }
 }
