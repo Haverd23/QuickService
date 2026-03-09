@@ -2,6 +2,7 @@
 using QUS.Auth.Application.Kafka.Events;
 using QUS.Auth.Domain.Interfaces;
 using QUS.Auth.Domain.Models;
+using QUS.Core.Exceptions;
 using QUS.Core.IntegrationEvent;
 using QUS.Core.Message;
 using System;
@@ -33,7 +34,7 @@ namespace QUS.Auth.Application.Kafka.EventsHandlers
             var emailExists = await _authRepository.GetByEmailAsync(evento.Email);
             if (emailExists != null)
             {
-                throw new Exception("Email already exists");
+                throw new AppException("Email already exists",409);
             }
             var senhaHash = _passwordEncryption.PasswordHash(evento.Password);
             var user = new User(evento.AuthId,evento.Email, senhaHash);
@@ -41,7 +42,7 @@ namespace QUS.Auth.Application.Kafka.EventsHandlers
             var success = await _authRepository.UnitOfWork.Commit();
             if (!success)
             {
-                throw new Exception("Error saving user");
+                throw new AppException("Error saving user",500);
             }
             var authCreatedEvent = new AuthCreatedEvent(evento.AuthId,evento.Email,evento.Name,evento.Phone);
             var topic = authCreatedEvent.EventType;

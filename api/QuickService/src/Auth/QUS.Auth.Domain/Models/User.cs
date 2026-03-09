@@ -1,6 +1,7 @@
 ﻿using QUS.Auth.Domain.DomainEvents;
 using QUS.Auth.Domain.ValueObjects;
 using QUS.Core.DomainObjects;
+using QUS.Core.Exceptions;
 
 namespace QUS.Auth.Domain.Models
 {
@@ -21,15 +22,15 @@ namespace QUS.Auth.Domain.Models
         public static void PasswordValidade(string password)
         {
             if (string.IsNullOrWhiteSpace(password))
-                throw new Exception("Senha inválida");
+                throw new AppException("Senha inválida",400);
             if (password.Length < 6)
-                throw new Exception("Senha deve ter pelo menos 6 caracteres");
+                throw new AppException("Senha deve ter pelo menos 6 caracteres", 400);
             if (!password.Any(char.IsDigit))
-                throw new Exception("Senha deve conter pelo menos um número");
+                throw new AppException("Senha deve conter pelo menos um número", 400);
             if (!password.Any(char.IsUpper))
-                throw new Exception("Senha deve conter pelo menos uma letra maiúscula");
+                throw new AppException("Senha deve conter pelo menos uma letra maiúscula", 400);
             if (!password.Any(char.IsLower))
-                throw new Exception("Senha deve conter pelo menos uma letra minúscula");
+                throw new AppException("Senha deve conter pelo menos uma letra minúscula", 400);
         }
     }
 }

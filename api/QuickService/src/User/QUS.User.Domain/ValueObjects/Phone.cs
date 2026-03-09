@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QUS.Core.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace QUS.Users.Domain.ValueObjects
         {
             if (string.IsNullOrWhiteSpace(number))
             {
-                throw new ArgumentException("Telefone não pode ser vazio");
+                throw new AppException("Telefone não pode ser vazio",400);
             }
             string limpo = Regex.Replace(number, @"[\s\-\.\(\)]", "");
 
@@ -28,7 +29,7 @@ namespace QUS.Users.Domain.ValueObjects
 
             if (!Regex.IsMatch(limpo, pattern))
             {
-                throw new ArgumentException("Telefone inválido");
+                throw new AppException("Telefone inválido",400);
             }
 
         }

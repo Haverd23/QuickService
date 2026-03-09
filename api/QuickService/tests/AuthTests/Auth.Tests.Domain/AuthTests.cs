@@ -1,4 +1,5 @@
 using QUS.Auth.Domain.Models;
+using QUS.Core.Exceptions;
 
 namespace Auth.Tests.Domain
 {
@@ -29,7 +30,7 @@ namespace Auth.Tests.Domain
             var password = "123"; // Senha inválida
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => new User(Guid.NewGuid(), email, password));
+            var exception = Assert.Throws<AppException>(() => new User(Guid.NewGuid(), email, password));
         }
         [Fact(DisplayName = "Criar User com email inválido lança Exceção")]
         public void Construtor_QuandoEmailInvalido_DeveLancarExcecao()
@@ -38,7 +39,7 @@ namespace Auth.Tests.Domain
             var email = "teste.com"; // Email inválido
             var password = "Senha123";
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => new User(Guid.NewGuid(), email, password));
+            var exception = Assert.Throws<AppException>(() => new User(Guid.NewGuid(), email, password));
         }
         [Fact(DisplayName = "Criar User com senha sem número lança Exceção")]
         public void Construtor_QuandoSenhaSemNumero_DeveLancarExcecao()
@@ -48,7 +49,7 @@ namespace Auth.Tests.Domain
             var password = "Senha"; // Senha sem número
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => new User(Guid.NewGuid(), email, password));
+            var exception = Assert.Throws<AppException>(() => new User(Guid.NewGuid(), email, password));
 
 
         }
@@ -60,7 +61,7 @@ namespace Auth.Tests.Domain
             var password = "senha123"; // Senha sem letra maiúscula
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => new User(Guid.NewGuid(), email, password));
+            var exception = Assert.Throws<AppException>(() => new User(Guid.NewGuid(), email, password));
 
         }
     }

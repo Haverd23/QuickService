@@ -1,4 +1,5 @@
 ﻿using QUS.Core.DomainObjects;
+using QUS.Core.Exceptions;
 using QUS.Users.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,15 +25,15 @@ namespace QUS.Users.Domain.Models
         {
             if(string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException("Nome não pode ser vazio");
+                throw new AppException("Nome não pode ser vazio",400);
             }
             if(name.Length < 3)
             {
-                throw new ArgumentException("Nome deve ter pelo menos 3 caracteres");
+                throw new AppException("Nome deve ter pelo menos 3 caracteres", 400);
             }
             if(!email.Contains("@"))
             {
-                throw new ArgumentException("Email inválido");
+                throw new AppException("Email inválido",400);
             }
           
 

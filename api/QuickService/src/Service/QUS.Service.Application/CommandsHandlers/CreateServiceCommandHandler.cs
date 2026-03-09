@@ -1,4 +1,5 @@
-﻿using QUS.Core.Mediator.Commands;
+﻿using QUS.Core.Exceptions;
+using QUS.Core.Mediator.Commands;
 using QUS.Service.Application.Commands;
 using QUS.Services.Domain.Enums;
 using QUS.Services.Domain.Interfaces;
@@ -19,7 +20,7 @@ namespace QUS.Services.Application.CommandsHandlers
         {
             if (!Enum.TryParse<Category>(command.Category, true, out var category))
             {
-                throw new Exception("Categoria inválida");
+                throw new AppException("Categoria inválida",400);
             }
 
             var service = new DomainService(
@@ -34,7 +35,7 @@ namespace QUS.Services.Application.CommandsHandlers
             var success = await _serviceRepository.UnitOfWork.Commit();
             if (!success)
             {
-                throw new Exception("Ocorreu um erro ao criar o serviço");
+                throw new AppException("Ocorreu um erro ao criar o serviço", 400);
             }
             return service.Id;
 

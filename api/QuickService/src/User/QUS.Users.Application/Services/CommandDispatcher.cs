@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using QUS.Core.Exceptions;
 using QUS.Core.Mediator.Commands;
 
 
@@ -17,7 +18,7 @@ namespace QUS.Users.Application.Services
         {
             var handler = _serviceProvider.GetService<ICommandHandler<TCommand, TResult>>();
             if (handler == null)
-                throw new InvalidOperationException($"Handler não encontrado para o comando: {typeof(TCommand).Name}");
+                throw new AppException($"Handler não encontrado para o comando: {typeof(TCommand).Name}",404);
             return await handler.HandleAsync(command);
         }
     }

@@ -1,3 +1,4 @@
+using QUS.Core.Exceptions;
 using QUS.Services.Domain.Enums;
 using QUS.Services.Domain.Models;
 
@@ -41,7 +42,7 @@ namespace Services.Tests.Domain
             var category = Category.Mecânico;
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => new Service(title, description, price, providerId, category));
+            var exception = Assert.Throws<AppException>(() => new Service(title, description, price, providerId, category));
             Assert.Equal("O Título não pode ser vazio", exception.Message);
         }
 
@@ -56,7 +57,7 @@ namespace Services.Tests.Domain
             var category = Category.Mecânico;
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => new Service(title, description, price, providerId, category));
+            var exception = Assert.Throws<AppException>(() => new Service(title, description, price, providerId, category));
             Assert.Equal("O Preço não pode ser negativo", exception.Message);
         }
 
@@ -71,7 +72,7 @@ namespace Services.Tests.Domain
             var category = Category.Mecânico;
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => new Service(title, description, price, providerId, category));
+            var exception = Assert.Throws<AppException>(() => new Service(title, description, price, providerId, category));
             Assert.Equal("A Descrição não pode ser vazia", exception.Message);
         }
 
@@ -103,7 +104,7 @@ namespace Services.Tests.Domain
             var novoTitulo = ""; // Título vazio
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => service.ChangeTitle(novoTitulo));
+            var exception = Assert.Throws<AppException>(() => service.ChangeTitle(novoTitulo));
             Assert.Equal("O Título não pode ser vazio", exception.Message);
         }
         [Fact(DisplayName = "Mudar Preço com Valor Válido")]
@@ -131,7 +132,7 @@ namespace Services.Tests.Domain
             var novoPreco = -100; // Preço negativo
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => service.ChangePrice(novoPreco));
+            var exception = Assert.Throws<AppException>(() => service.ChangePrice(novoPreco));
             Assert.Equal("O Preço não pode ser negativo", exception.Message);
         }
         [Fact(DisplayName = "Mudar Descrição com Valor Válido")]
@@ -159,7 +160,7 @@ namespace Services.Tests.Domain
             var novaDescricao = ""; // Descrição vazia
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => service.ChangeDescription(novaDescricao));
+            var exception = Assert.Throws<AppException>(() => service.ChangeDescription(novaDescricao));
             Assert.Equal("A Descrição não pode ser vazia", exception.Message);
         }
         [Fact(DisplayName = "Mudar Categoria")]
@@ -187,7 +188,7 @@ namespace Services.Tests.Domain
             var novaCategoria = Category.Mecânico; // Mesma categoria
             // Act & Assert
 
-            var exception = Assert.Throws<Exception>(() => service.ChangeCategory(novaCategoria));
+            var exception = Assert.Throws<AppException>(() => service.ChangeCategory(novaCategoria));
             Assert.Equal("A nova categoria deve ser diferente da atual", exception.Message);
         }
     }

@@ -2,6 +2,7 @@
 using QUS.Auth.Application.Interfaces;
 using QUS.Auth.Domain.Interfaces;
 using QUS.Auth.Domain.Models;
+using QUS.Core.Exceptions;
 using QUS.Core.Mediator.Commands;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace QUS.Auth.Application.CommandsHandlers
            var emailExists = await _authRepository.GetByEmailAsync(command.Email);
            if (emailExists != null)
               {
-                throw new Exception("Email already exists");
+                throw new AppException("Email already exists",409);
             }
            var senhaHash = _passwordEncryption.PasswordHash(command.Password);
            var user = new User(Guid.NewGuid(),command.Email, senhaHash);
@@ -35,7 +36,7 @@ namespace QUS.Auth.Application.CommandsHandlers
            var success = await _authRepository.UnitOfWork.Commit();
             if (!success)
             {
-              throw new Exception("Error saving user");
+              throw new AppException("Error saving user",500);
             }
             return user.Id;
 
