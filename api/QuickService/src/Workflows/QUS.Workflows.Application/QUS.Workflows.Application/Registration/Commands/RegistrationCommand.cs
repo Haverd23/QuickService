@@ -8,19 +8,21 @@ using System.Windows.Input;
 
 namespace QUS.Workflows.Application.Registration.Commands
 {
-    public class UserCreateCommand : ICommand<Guid>
+    public class RegistrationCommand : ICommand<Guid>
     {
-        public string Name { get; }
-        public string Email { get; }
-        public string Phone { get; }
         public Guid AuthId { get; }
-
-        public UserCreateCommand(string name, string email, string phone, Guid authId)
+        public string Email { get;  }
+        public string Password { get;  }
+        public string Name { get; }
+        public string Phone { get; }
+        public RegistrationCommand(Guid authId, string email, string password,
+            string name, string phone)
         {
-            Name = name;
             Email = email;
-            Phone = phone;
+            Password = password;
             AuthId = authId;
+            Name = name;
+            Phone = phone;
         }
     }
 }

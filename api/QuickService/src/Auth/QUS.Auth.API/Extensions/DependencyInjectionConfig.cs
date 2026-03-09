@@ -59,7 +59,8 @@ namespace QUS.Auth.API.Extensions
 
             services.AddSingleton<IKafkaConsumer, KafkaConsumer>();
             services.AddSingleton<GenericKafkaDispatcher>();
-            services.AddScoped<IIntegrationEventHandler<AuthCreateEvent>, AuthCreateEventHandler>();
+            services.AddScoped<IIntegrationEventHandler<RegistrationEvent>, AuthCreateEventHandler>();
+            services.AddScoped<IIntegrationEventHandler<UserCreateFailedEvent>, UserCreateFailedEventHandler>();
             services.AddSingleton(sp =>
             {
                 var configuration = sp.GetRequiredService<IConfiguration>();

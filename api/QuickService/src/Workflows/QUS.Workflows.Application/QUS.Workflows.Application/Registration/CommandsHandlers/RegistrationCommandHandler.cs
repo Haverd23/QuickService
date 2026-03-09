@@ -11,19 +11,22 @@ using System.Threading.Tasks;
 
 namespace QUS.Workflows.Application.Registration.CommandsHandlers
 {
-    public class AuthCreateCommandHandler : ICommandHandler<AuthCreateCommand, Guid>
+    public class RegistrationCommandHandler : ICommandHandler<RegistrationCommand, Guid>
     {
         private readonly IEventBus _eventBus;
-        public AuthCreateCommandHandler(IEventBus eventBus)
+        public RegistrationCommandHandler(IEventBus eventBus)
         {
             _eventBus = eventBus;
         }
-        public async Task<Guid> HandleAsync(AuthCreateCommand command)
+        public async Task<Guid> HandleAsync(RegistrationCommand command)
         {
-            var applicationEvent = new AuthCreateEvent(
+            var applicationEvent = new RegistrationEvent(
                 command.AuthId,
                 command.Email,
-                command.Password
+                command.Password,
+                command.Name,
+                command.Phone
+
             );
 
             var topic = applicationEvent.EventType;

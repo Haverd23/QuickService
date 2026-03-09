@@ -13,10 +13,9 @@ namespace QUS.Workflows.API.Extensions
         public static IServiceCollection AddDependencyInjection(this
             IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<ICommandHandler<AuthCreateCommand, Guid>,
-                AuthCreateCommandHandler>();
-            services.AddScoped<ICommandHandler<UserCreateCommand, Guid>,
-                UserCreateCommandHandler>();
+            services.AddScoped<ICommandHandler<RegistrationCommand, Guid>,
+                RegistrationCommandHandler>();
+         
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddSingleton<IKafkaProducer, KafkaProducer>();
             services.AddSingleton<IEventBus, KafkaEventBus>();

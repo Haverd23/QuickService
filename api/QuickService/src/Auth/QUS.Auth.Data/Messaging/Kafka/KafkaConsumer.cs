@@ -18,11 +18,11 @@ namespace QUS.Auth.Data.Messaging.Kafka
         }
 
         public async Task SubscribeAsync(
-    string topic,
-    Func<string, string, Task> messageHandler,
-    CancellationToken cancellationToken = default)
+            string[] topics,
+            Func<string, string, Task> messageHandler,
+            CancellationToken cancellationToken = default)
         {
-            _consumer.Subscribe(topic);
+            _consumer.Subscribe(topics);
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -34,32 +34,27 @@ namespace QUS.Auth.Data.Messaging.Kafka
                 }
                 catch (OperationCanceledException)
                 {
-                    break; 
+                    break;
                 }
                 catch (ConsumeException)
                 {
-                    continue; 
+                    continue;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Erro ao processar mensagem: {ex.Message}");
                 }
 
-                if (result?.Message == null)
-                    continue;
+                if (result?.Message == null) continue;
 
                 try
                 {
-                    await messageHandler(
-                        result.Message.Key,
-                        result.Message.Value);
-
+                    await messageHandler(result.Topic, result.Message.Value);
                     _consumer.Commit(result);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"🔥 Erro dentro do handler: {ex.Message}");
-
                 }
             }
         }

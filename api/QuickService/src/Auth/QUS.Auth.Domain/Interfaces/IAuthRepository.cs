@@ -12,5 +12,6 @@ namespace QUS.Auth.Domain.Interfaces
     {
         Task AddAsync(User user);
         Task<User?> GetByEmailAsync(string email);
+        Task DeleteAsync(Guid user);
     }
 }

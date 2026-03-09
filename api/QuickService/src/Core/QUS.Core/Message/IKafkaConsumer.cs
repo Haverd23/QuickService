@@ -8,7 +8,9 @@ namespace QUS.Core.Message
 {
     public interface IKafkaConsumer
     {
-        Task SubscribeAsync(string topic, Func<string, string, Task> messageHandler, CancellationToken cancellationToken = default);
-
+        Task SubscribeAsync(
+            string[] topics,
+            Func<string, string, Task> messageHandler,
+            CancellationToken cancellationToken = default);
     }
 }

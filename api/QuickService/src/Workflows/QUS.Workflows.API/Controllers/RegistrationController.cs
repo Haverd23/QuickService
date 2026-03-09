@@ -21,16 +21,17 @@ namespace QUS.Workflows.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegistrationDTO registrationDTO)
         {
+            if (registrationDTO == null)
+            {
+                return BadRequest();
+            }
             var authId = Guid.NewGuid();
-            var command = new AuthCreateCommand(authId,registrationDTO.Email,
-                registrationDTO.Password);
-           await _dispatcher.DispatchAsync<AuthCreateCommand, Guid>(command);
-            var commandUser = new UserCreateCommand
-                (registrationDTO.Name,registrationDTO.Email,
-                registrationDTO.Phone, authId);
-            await _dispatcher.DispatchAsync<UserCreateCommand, Guid>(commandUser);
+            var command = new RegistrationCommand(authId,registrationDTO.Email,
+                registrationDTO.Password, registrationDTO.Name, registrationDTO.Phone);
+          
+            var result = await _dispatcher.DispatchAsync<RegistrationCommand, Guid>(command);
+            return Ok(result);
 
-            return Ok();
         }
 
     }

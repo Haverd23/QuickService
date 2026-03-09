@@ -6,5 +6,6 @@ namespace QUS.Users.Domain.Interfaces
     {
         Task Add(User user);
         Task<User> GetById(Guid id);
+        Task<User> GetByEmail(string email);
     }
 }
