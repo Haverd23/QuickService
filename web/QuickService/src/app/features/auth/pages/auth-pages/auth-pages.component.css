@@ -174,4 +174,23 @@
   font-weight: 700;
   margin-left: 4px;
 }
+input.invalid{
+  border:1px solid #ff4d4f;
+  animation: shake 0.25s;
+}
+
+.api-error{
+  color:#ff4d4f;
+  font-size:12px;
+  margin-top:4px;
+  animation: fadeIn 0.2s ease;
+}
+
+.glow-button:disabled {
+  background: #cfcfcf;
+  color: #777;
+  cursor: not-allowed;
+  opacity: 0.7;
+  pointer-events: none;
+}
 

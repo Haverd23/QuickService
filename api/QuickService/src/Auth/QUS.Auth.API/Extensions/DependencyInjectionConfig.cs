@@ -5,6 +5,8 @@ using QUS.Auth.Application.CommandsHandlers;
 using QUS.Auth.Application.Interfaces;
 using QUS.Auth.Application.Kafka.Events;
 using QUS.Auth.Application.Kafka.EventsHandlers;
+using QUS.Auth.Application.Queries;
+using QUS.Auth.Application.QueriesHandlers;
 using QUS.Auth.Application.Services;
 using QUS.Auth.Data;
 using QUS.Auth.Data.Messaging;
@@ -14,6 +16,7 @@ using QUS.Auth.Domain.Interfaces;
 using QUS.Core.DomainObjects;
 using QUS.Core.IntegrationEvent;
 using QUS.Core.Mediator.Commands;
+using QUS.Core.Mediator.Queries;
 using QUS.Core.Message;
 
 namespace QUS.Auth.API.Extensions
@@ -35,6 +38,9 @@ namespace QUS.Auth.API.Extensions
             services.AddScoped<ITokenJWT, TokenJWT>();
             services.AddScoped<IPasswordEncryption, PasswordEncryption>();
             services.AddScoped<ILogin, LoginService>();
+            services.AddScoped<IQueryHandler<GetUserByEmailQuery, bool>,
+                GetUserByEmailQueryHandler>();
+            services.AddScoped<IQueryDispatcher, QueryDispatcher>();
 
             // Events
             services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();

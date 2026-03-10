@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using QUS.Auth.API.DTOs;
 using QUS.Auth.Application.Commands;
 using QUS.Auth.Application.Interfaces;
+using QUS.Auth.Application.Queries;
 using QUS.Core.Mediator.Commands;
+using QUS.Core.Mediator.Queries;
 
 namespace QUS.Auth.API.Controllers
 {
@@ -13,12 +15,15 @@ namespace QUS.Auth.API.Controllers
     {
         private readonly ICommandDispatcher _commandDispatcher;
         private readonly ILogin _loginService;
+        private readonly IQueryDispatcher _queryDispatcher;
 
         public AuthController(ICommandDispatcher commandDispatcher,
-            ILogin loginService)
+            ILogin loginService,
+            IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
             _loginService = loginService;
+            _queryDispatcher = queryDispatcher;
         }
 
         [HttpPost]
@@ -39,6 +44,13 @@ namespace QUS.Auth.API.Controllers
             }
             return Ok(new { Token = token });
         }
+        [HttpGet("email-exists")]
+        public async Task<IActionResult> CheckEmailExists([FromQuery] string email)
+        {
 
+            var query = new GetUserByEmailQuery(email);
+            var exists = await _queryDispatcher.DispatchAsync<GetUserByEmailQuery, bool>(query);
+            return Ok(new { Exists = exists });
+        }
     }
 }
