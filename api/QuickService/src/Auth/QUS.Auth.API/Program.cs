@@ -1,4 +1,5 @@
 using QUS.Auth.API.Extensions;
+using QUS.Core.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,13 +7,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CORS", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+
 builder.Services.AddDependencyInjection(builder.Configuration);
 
 var app = builder.Build();
+app.UseCors("CORS");
+
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

@@ -1,19 +1,14 @@
 <div class="split-screen">
-  
-  <!-- LADO ESQUERDO -->
   <div class="left-pane">
     <div class="brand-top">QuickService</div>
-
     <div class="hero-text">
       <h1 [innerHTML]="heroHtml"></h1>
     </div>
-
     <div class="floating-card">
       <img [src]="imageSrc" alt="Imagem">
     </div>
   </div>
 
-  <!-- LADO DIREITO -->
   <div class="right-pane">
     <div class="login-form">
 
@@ -29,14 +24,45 @@
             [type]="field.type"
             [formControlName]="field.name"
             required
+            [class.invalid]="form.get(field.name)?.touched && form.get(field.name)?.invalid"
+            [value]="field.name==='phone'?displayPhone:null"
+            (input)="field.name==='phone'?onPhoneInput($event):null"
           >
           <label>{{ field.label }}</label>
+
+          <div class="api-error"
+            *ngIf="form.get(field.name)?.touched && form.get(field.name)?.invalid">
+
+            <span *ngIf="form.get(field.name)?.errors?.['required']">
+              {{ field.label }} é obrigatório
+            </span>
+            <span *ngIf="field.name==='name' && form.get(field.name)?.errors?.['minlength']">
+              Nome deve ter pelo menos 3 caracteres
+            </span>
+            <span *ngIf="field.name==='email' && form.get(field.name)?.errors?.['email']">
+              Email inválido
+            </span>
+            <span *ngIf="field.name==='phone' && form.get(field.name)?.errors?.['pattern']">
+              Telefone inválido
+            </span>
+            <span *ngIf="field.name==='password' && form.get(field.name)?.errors?.['minlength']">
+              Senha deve ter pelo menos 6 caracteres
+            </span>
+            <span *ngIf="field.name==='password' && form.get(field.name)?.errors?.['pattern']">
+              Senha precisa conter número, letra maiúscula e minúscula
+            </span>
+            <span *ngIf="field.name==='confirmPassword' && form.errors?.['passwordMismatch']">
+              Senhas não coincidem
+            </span>
+
+          </div>
         </div>
 
-        <button type="submit" class="glow-button">
+        <div class="api-error" *ngIf="apiError">{{ apiError }}</div>
+
+        <button type="submit" class="glow-button" [disabled]="form.invalid">
           {{ buttonText }}
         </button>
-
       </form>
 
       <div class="create-account">
@@ -46,5 +72,4 @@
 
     </div>
   </div>
-
 </div>
