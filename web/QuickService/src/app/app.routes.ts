@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthPageComponent } from './features/auth/pages/auth-pages/auth-pages.component';
+import { AuthGuard } from './core/Guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -10,11 +11,13 @@ export const routes: Routes = [
   {
     path: 'login',
     component: AuthPageComponent,
-    data: { type: 'login' }
+    data: { type: 'login' },
+    // canActivate: [AuthGuard]
   },
   {
     path: 'register',
     component: AuthPageComponent,
-    data: { type: 'register' }
+    data: { type: 'register' },
+    canActivate: [AuthGuard]
   }
 ];
