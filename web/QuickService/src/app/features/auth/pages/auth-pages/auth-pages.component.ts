@@ -138,7 +138,24 @@ submit() {
       }
     });
   }
+  else{
+    const formValue = this.form.value;
+
+    this.authService.login(formValue).subscribe({
+      next: (response) => {
+        this.authService.storeToken(response.token);
+        console.log('Login bem-sucedido!', response);
+        this.apiError = '';
+      },
+      error: (err) => {
+        console.error('Erro ao fazer login', err);
+        this.apiError = 'Erro ao fazer login.';
+      }
+    });
+
+  }
 }
+
 
   // -------------------------
   // VALIDADOR POR CAMPO
