@@ -73,3 +73,23 @@
   gap: 1.6rem;
 }
 
+.hero-actions {
+  margin-top: 1.2rem;
+}
+
+.hero-secondary-btn {
+  display: inline-block;
+  text-decoration: none;
+  background: #fff;
+  color: var(--accent);
+  font-weight: 700;
+  border: 1px solid var(--accent);
+  padding: .85rem 1.2rem;
+  border-radius: 10px;
+  transition: .2s ease;
+}
+
+.hero-secondary-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}

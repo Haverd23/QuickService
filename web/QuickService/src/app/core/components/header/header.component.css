@@ -16,8 +16,13 @@
   color: var(--accent);
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .nav a {
-  margin-left: 1.4rem;
   text-decoration: none;
   font-weight: 700;
   color: var(--text);
@@ -25,8 +30,6 @@
 
 .nav a:hover {
   color: var(--accent);
- 
-
 }
 
 .nav a.primary {
@@ -34,12 +37,26 @@
   color: #fff;
   padding: .45rem .9rem;
   border-radius: 8px;
-
 }
+
 .nav a.primary:hover {
   background: var(--accent);
 }
 
- a{
+.logout-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: .45rem .9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.logout-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+a {
   text-decoration: none;
- }
+}

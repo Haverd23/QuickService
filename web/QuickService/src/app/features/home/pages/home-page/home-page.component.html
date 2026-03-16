@@ -1,5 +1,6 @@
 <section class="hero">
   <h2>Encontre serviços confiáveis perto de você</h2>
+
   <p>
     Contrate profissionais avaliados para resolver seus problemas do dia a dia,
     sem complicação.
@@ -12,26 +13,53 @@
     />
     <button>Buscar</button>
   </div>
+
+  <div class="hero-actions">
+    <ng-container *ngIf="!isLogged; else loggedActions">
+      <a routerLink="/login" class="hero-secondary-btn">
+        Entrar para anunciar serviço
+      </a>
+    </ng-container>
+
+    <ng-template #loggedActions>
+      <a routerLink="/servicos/novo" class="hero-secondary-btn">
+        Criar novo serviço
+      </a>
+    </ng-template>
+  </div>
 </section>
 
 <main class="container">
+
+  <!-- Categorias -->
   <h2 class="section-title">Categorias populares</h2>
 
   <div class="categories">
-    
-    <app-category [icon]="'🔧'" [title]="'Mecânica'"></app-category>
-    <app-category [icon]="'🎨'" [title]="'Pintura'"></app-category>
-    <app-category [icon]="'💡'" [title]="'Elétrica'"></app-category>
-    <app-category [icon]="'💻'" [title]="'TI'"></app-category>
-    <app-category [icon]="'🚿'" [title]="'Hidráulica'"></app-category>
-    <app-category [icon]="'🧹'" [title]="'Limpeza'"></app-category>
+    <app-category
+      *ngFor="let category of categories"
+      [icon]="category.icon"
+      [title]="category.title">
+    </app-category>
   </div>
 
+  <!-- Últimos serviços -->
   <h2 class="section-title">Últimos Serviços</h2>
 
   <div class="cards">
-    <app-cards [cardTitle]="'Manutenção automotiva'" [cardDescription]="'Manutenção automotiva e diagnóstico completo, atendimento rápido.'"></app-cards>
-    <app-cards [cardTitle]="'Pintura residencial'" [cardDescription]="'Pintura de interiores e exteriores, acabamento de alta qualidade.'"></app-cards>
-    <app-cards [cardTitle]="'Reparos elétricos'" [cardDescription]="'Instalação e reparo de sistemas elétricos, segurança garantida.'"></app-cards>
+    <app-cards
+      [cardTitle]="'Manutenção automotiva'"
+      [cardDescription]="'Manutenção automotiva e diagnóstico completo, atendimento rápido.'">
+    </app-cards>
+
+    <app-cards
+      [cardTitle]="'Pintura residencial'"
+      [cardDescription]="'Pintura de interiores e exteriores, acabamento de alta qualidade.'">
+    </app-cards>
+
+    <app-cards
+      [cardTitle]="'Reparos elétricos'"
+      [cardDescription]="'Instalação e reparo de sistemas elétricos, segurança garantida.'">
+    </app-cards>
   </div>
+
 </main>

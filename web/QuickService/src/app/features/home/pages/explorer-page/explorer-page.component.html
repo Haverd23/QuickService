@@ -1,0 +1,165 @@
+<section class="explore-hero">
+  <h2>Explore serviços disponíveis</h2>
+  <p>Encontre profissionais e oportunidades perto de você.</p>
+</section>
+
+<main class="container">
+  <section class="search-panel">
+    <div class="search-panel-header">
+      <div>
+        <h2 class="section-title">Buscar serviços</h2>
+        <p class="section-subtitle">
+          Pesquise e filtre serviços sem sair da página.
+        </p>
+      </div>
+    </div>
+
+    <div class="search-filters">
+      <div class="field-group search-field">
+        <label for="search">Busca</label>
+        <input
+          id="search"
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Ex: pintor, elétrica, Recife..."
+        />
+      </div>
+
+      <div class="field-group">
+        <label for="category">Categoria</label>
+        <select id="category" [(ngModel)]="selectedCategory">
+          <option value="">Todas as categorias</option>
+          <option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label for="city">Cidade</label>
+        <input
+          id="city"
+          type="text"
+          [(ngModel)]="selectedCity"
+          placeholder="Digite a cidade"
+        />
+      </div>
+
+      <div class="filter-actions">
+        <button type="button" class="action-btn primary" (click)="onSearch()">
+          Buscar
+        </button>
+
+        <button type="button" class="action-btn secondary" (click)="clearFilters()">
+          Limpar
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="tabs-section">
+    <div class="tabs">
+      <button
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab === 'others'"
+        (click)="setActiveTab('others')">
+        Outros serviços
+      </button>
+
+      <button
+        *ngIf="isLogged"
+        type="button"
+        class="tab-btn"
+        [class.active]="activeTab === 'mine'"
+        (click)="setActiveTab('mine')">
+        Meus serviços
+      </button>
+    </div>
+  </section>
+
+  <section class="services-section">
+    <div class="services-header">
+      <div>
+        <h2 class="section-title">
+          {{ activeTab === 'mine' ? 'Meus serviços' : 'Outros serviços' }}
+        </h2>
+        <p class="section-subtitle">
+          {{ totalItems }} serviço(s) encontrado(s)
+        </p>
+      </div>
+    </div>
+
+    <div class="services-grid" *ngIf="displayedServices.length > 0; else emptyState">
+      <article class="service-card" *ngFor="let service of displayedServices">
+        <div class="service-header">
+          <span class="service-category">{{ service.category }}</span>
+          <span class="service-date">{{ service.createdAt }}</span>
+        </div>
+
+        <h3>{{ service.title }}</h3>
+        <p>{{ service.description }}</p>
+
+        <div class="service-meta">
+          <span>📍 {{ service.city }}</span>
+          <span>👤 {{ service.ownerName }}</span>
+        </div>
+
+        <div class="service-actions">
+          <ng-container *ngIf="activeTab === 'mine'; else othersActions">
+            <button class="action-btn edit" (click)="editService(service.id)">
+              Editar
+            </button>
+
+            <button class="action-btn delete" (click)="deleteService(service.id)">
+              Excluir
+            </button>
+          </ng-container>
+
+          <ng-template #othersActions>
+            <ng-container *ngIf="!isLogged">
+              <a routerLink="/login" class="action-btn secondary">
+                Entre para interagir
+              </a>
+            </ng-container>
+
+            <ng-container *ngIf="isLogged">
+              <button class="action-btn primary" (click)="showInterest(service.id)">
+                Tenho interesse
+              </button>
+            </ng-container>
+          </ng-template>
+        </div>
+      </article>
+    </div>
+
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <h3>Nenhum serviço encontrado</h3>
+        <p>Tente ajustar os filtros ou buscar por outros termos.</p>
+      </div>
+    </ng-template>
+
+    <div class="pagination" *ngIf="displayedServices.length > 0">
+      <button
+        type="button"
+        class="action-btn secondary"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1">
+        Anterior
+      </button>
+
+      <span class="pagination-info">
+        Página {{ currentPage }} de {{ totalPages }}
+      </span>
+
+      <button
+        type="button"
+        class="action-btn secondary"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages">
+        Próxima
+      </button>
+    </div>
+  </section>
+</main>

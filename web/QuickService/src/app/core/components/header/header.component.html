@@ -1,9 +1,19 @@
 <header class="header">
-  <a routerLink="/"> <h1 class="logo">QuickService</h1></a>
+  <a routerLink="/">
+    <h1 class="logo">QuickService</h1>
+  </a>
 
   <nav class="nav">
     <a routerLink="/explorar">Explorar</a>
     <a routerLink="/como-funciona">Como funciona</a>
-    <a routerLink="/login" class="primary">Entrar</a>
+
+    <ng-container *ngIf="!isLogged; else loggedMenu">
+      <a routerLink="/login" class="primary">Entrar</a>
+    </ng-container>
+
+    <ng-template #loggedMenu>
+      <a routerLink="/servicos/novo" class="primary">Novo serviço</a>
+      <button type="button" class="logout-btn" (click)="logout()">Sair</button>
+    </ng-template>
   </nav>
 </header>
