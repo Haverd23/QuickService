@@ -3,6 +3,7 @@ import { AuthPageComponent } from './features/auth/pages/auth-pages/auth-pages.c
 import { AuthGuard } from './core/Guards/auth-guard';
 import path from 'path';
 import { ExplorePageComponent } from './features/home/pages/explorer-page/explorer-page.component';
+import { NewServicePageComponent } from './features/home/pages/new-service-page/new-service-page.component';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,10 @@ export const routes: Routes = [
     path: 'explorar',
     component: ExplorePageComponent,
     data: { type: 'explorar' }
+  },
+  {
+    path: 'servicos/novo',
+    component: NewServicePageComponent
   }
 
 ];
