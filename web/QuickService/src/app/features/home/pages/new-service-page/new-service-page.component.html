@@ -1,0 +1,164 @@
+<section class="create-page">
+  <div class="page-top">
+  <div>
+    <p class="breadcrumb">
+      <a routerLink="/">Início</a>
+      <span>/</span>
+      <a routerLink="/explorar">Explorar</a>
+      <span>/</span>
+      <strong>Novo serviço</strong>
+    </p>
+
+      <h1>Criar novo serviço</h1>
+      <p class="page-subtitle">
+        Preencha os dados principais para publicar seu anúncio.
+      </p>
+    </div>
+
+    <div class="top-actions desktop-only">
+      <a routerLink="/explorar" class="btn secondary">Cancelar</a>
+      <button type="submit" form="serviceForm" class="btn primary" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Salvando...' : 'Publicar serviço' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="page-grid">
+    <section class="form-card">
+      <form [formGroup]="form" (ngSubmit)="submit()" class="service-form" id="serviceForm">
+        <div class="form-grid">
+          <div class="field-group field-span-2">
+            <label for="title">Título do serviço</label>
+            <input
+              id="title"
+              type="text"
+              formControlName="title"
+              placeholder="Ex: Pintura residencial completa"
+              [class.invalid]="title?.touched && title?.invalid"
+            />
+            <small class="error" *ngIf="title?.touched && title?.hasError('required')">
+              O título é obrigatório.
+            </small>
+            <small class="error" *ngIf="title?.touched && title?.hasError('minlength')">
+              O título deve ter pelo menos 4 caracteres.
+            </small>
+          </div>
+
+          <div class="field-group">
+            <label for="category">Categoria</label>
+            <select
+              id="category"
+              formControlName="category"
+              [class.invalid]="category?.touched && category?.invalid"
+            >
+              <option value="">Selecione uma categoria</option>
+              <option *ngFor="let item of categories" [value]="item">
+                {{ item }}
+              </option>
+            </select>
+            <small class="error" *ngIf="category?.touched && category?.hasError('required')">
+              A categoria é obrigatória.
+            </small>
+          </div>
+
+          <div class="field-group">
+            <label for="city">Cidade</label>
+            <input
+              id="city"
+              type="text"
+              formControlName="city"
+              placeholder="Ex: Recife"
+              [class.invalid]="city?.touched && city?.invalid"
+            />
+            <small class="error" *ngIf="city?.touched && city?.hasError('required')">
+              A cidade é obrigatória.
+            </small>
+            <small class="error" *ngIf="city?.touched && city?.hasError('minlength')">
+              A cidade deve ter pelo menos 2 caracteres.
+            </small>
+          </div>
+
+          <div class="field-group">
+            <label for="price">Preço base</label>
+            <input
+              id="price"
+              type="text"
+              formControlName="price"
+              placeholder="Ex: R$ 150,00"
+            />
+          </div>
+
+          <div class="field-group">
+            <label for="phone">Telefone para contato</label>
+            <input
+              id="phone"
+              type="text"
+              formControlName="phone"
+              placeholder="Ex: (81) 99999-9999"
+            />
+          </div>
+
+          <div class="field-group field-span-2">
+            <label for="description">Descrição</label>
+            <textarea
+              id="description"
+              rows="5"
+              formControlName="description"
+              placeholder="Descreva os detalhes do serviço, experiência, tipo de atendimento e prazo."
+              [class.invalid]="description?.touched && description?.invalid"
+            ></textarea>
+            <small class="error" *ngIf="description?.touched && description?.hasError('required')">
+              A descrição é obrigatória.
+            </small>
+            <small class="error" *ngIf="description?.touched && description?.hasError('minlength')">
+              A descrição deve ter pelo menos 10 caracteres.
+            </small>
+          </div>
+        </div>
+
+        <div class="mobile-actions mobile-only">
+          <a routerLink="/explorar" class="btn secondary">Cancelar</a>
+          <button type="submit" class="btn primary" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Salvando...' : 'Publicar serviço' }}
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <aside class="side-card">
+      <div class="summary-box">
+        <h3>Resumo do anúncio</h3>
+
+        <div class="summary-item">
+          <span>Título</span>
+          <strong>{{ form.value.title || 'Não informado' }}</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Categoria</span>
+          <strong>{{ form.value.category || 'Não informada' }}</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Cidade</span>
+          <strong>{{ form.value.city || 'Não informada' }}</strong>
+        </div>
+
+        <div class="summary-item">
+          <span>Preço</span>
+          <strong>{{ form.value.price || 'A combinar' }}</strong>
+        </div>
+      </div>
+
+      <div class="tips-box">
+        <h3>Dicas</h3>
+        <ul>
+          <li>Use um título direto e claro.</li>
+          <li>Explique exatamente o que está incluso.</li>
+          <li>Informe cidade e forma de atendimento.</li>
+          <li>Descrições objetivas costumam convencer melhor.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
