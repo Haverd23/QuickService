@@ -29,8 +29,9 @@ namespace QUS.Service.API.Controllers
                 commandDTO.Description,
                 commandDTO.Price,
                 userId,
-                commandDTO.Category
-                
+                commandDTO.Category,
+                commandDTO.City
+
             );
             var serviceId = await _commandDispatcher.DispatchAsync<CreateServiceCommand, Guid>(command);
             return CreatedAtAction(nameof(Post), new { id = serviceId }, null);

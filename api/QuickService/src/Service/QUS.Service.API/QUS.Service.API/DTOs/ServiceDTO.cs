@@ -6,5 +6,6 @@
         public string Description { get; }
         public decimal Price { get; }
         public string Category { get; }
+        public string City { get; }
     }
 }

@@ -10,14 +10,17 @@ namespace QUS.Services.Domain.Models
         public decimal Price { get; private set; }
         public Guid ProviderId { get; private set; }
         public Category Category { get; private set; }
-        public Service(string title, string description, decimal price, Guid providerId, Category category)
+        public string City { get; private set; }
+        public Service(string title, string description, decimal price,
+            Guid providerId, Category category, string city)
         {
-            ServiceValidation(title, description, price);
+            ServiceValidation(title, description, price,city);
             Title = title;
             Description = description;
             Price = price;
             ProviderId = providerId;
             Category = category;
+            City = city;
         }
         private void TitleValidation(string title)
         {
@@ -63,11 +66,24 @@ namespace QUS.Services.Domain.Models
             PriceValidation(price);
             Price = price;
         }
-        private void ServiceValidation(string title, string description, decimal price)
+        private void CityValidation(string city)
+        {
+            if (string.IsNullOrEmpty(city))
+                throw new AppException("A Cidade não pode ser vazia", 400);
+            if (city.Length < 3)
+                throw new AppException("A Cidade deve possuir mais que 3 caracteres", 400);
+            if (city.Length > 50)
+                throw new AppException("A Cidade deve possuir menos que 50 caracteres", 400);
+            if(city.Any(char.IsDigit))
+                throw new AppException("A Cidade não pode conter números", 400);
+        }
+        private void ServiceValidation(string title, string description, decimal price, string city)
         {
             TitleValidation(title);
             DescriptionValidation(description);
             PriceValidation(price);
+            CityValidation(city);
+
         }
 
 

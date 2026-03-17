@@ -24,7 +24,8 @@ namespace ServiceTests.Application
             var price = 150;
             var category = "Pedreiro";
             var providerId = Guid.NewGuid();
-            var command = new CreateServiceCommand(title, description, price,providerId, category);
+            var city = "São Paulo";
+            var command = new CreateServiceCommand(title, description, price,providerId, category,city);
             var commandHandler = new CreateServiceCommandHandler(_serviceRepositoryMock.Object);
 
             _serviceRepositoryMock.Setup(x => x.UnitOfWork.Commit()).
