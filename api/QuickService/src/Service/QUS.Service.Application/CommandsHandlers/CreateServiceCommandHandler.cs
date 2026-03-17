@@ -29,7 +29,8 @@ namespace QUS.Services.Application.CommandsHandlers
                 command.Description,
                 command.Price,
                 command.ProviderId,
-                category
+                category,
+                command.City
             );
             await _serviceRepository.AddAsync(service);
             var success = await _serviceRepository.UnitOfWork.Commit();

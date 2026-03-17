@@ -16,9 +16,10 @@ namespace Services.Tests.Domain
             var price = 150;
             var providerId = Guid.NewGuid();
             var category = Category.Mecânico;
+            var city = "São Paulo";
 
             // Act
-            var service = new Service(title, description, price, providerId, category);
+            var service = new Service(title, description, price, providerId, category,city);
 
             // Assert
             Assert.NotNull(service);
@@ -40,9 +41,11 @@ namespace Services.Tests.Domain
             var price = 150;
             var providerId = Guid.NewGuid();
             var category = Category.Mecânico;
+            var city = "São Paulo";
 
             // Act & Assert
-            var exception = Assert.Throws<AppException>(() => new Service(title, description, price, providerId, category));
+            var exception = Assert.Throws<AppException>(() => new Service(title,
+                description, price, providerId, category,city));
             Assert.Equal("O Título não pode ser vazio", exception.Message);
         }
 
@@ -55,9 +58,11 @@ namespace Services.Tests.Domain
             var price = -50; // Preço negativo
             var providerId = Guid.NewGuid();
             var category = Category.Mecânico;
+            var city = "São Paulo";
 
             // Act & Assert
-            var exception = Assert.Throws<AppException>(() => new Service(title, description, price, providerId, category));
+            var exception = Assert.Throws<AppException>(() => new Service(title,
+                description, price, providerId, category, city));
             Assert.Equal("O Preço não pode ser negativo", exception.Message);
         }
 
@@ -70,9 +75,11 @@ namespace Services.Tests.Domain
             var price = 150;
             var providerId = Guid.NewGuid();
             var category = Category.Mecânico;
+            var city = "São Paulo";
 
             // Act & Assert
-            var exception = Assert.Throws<AppException>(() => new Service(title, description, price, providerId, category));
+            var exception = Assert.Throws<AppException>(() => new Service(title,
+                description, price, providerId, category, city));
             Assert.Equal("A Descrição não pode ser vazia", exception.Message);
         }
 
@@ -82,7 +89,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
 
             var novoTitulo = "Alinhamento e Balanceamento";
 
@@ -99,7 +106,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
 
             var novoTitulo = ""; // Título vazio
 
@@ -113,7 +120,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
             var novoPreco = 200;
 
             // Act
@@ -128,7 +135,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
             var novoPreco = -100; // Preço negativo
 
             // Act & Assert
@@ -141,7 +148,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
             var novaDescricao = "Serviço completo de alinhamento e balanceamento.";
 
             // Act
@@ -156,7 +163,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
             var novaDescricao = ""; // Descrição vazia
 
             // Act & Assert
@@ -169,7 +176,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
             var novaCategoria = Category.Eletricista;
 
             // Act
@@ -184,7 +191,7 @@ namespace Services.Tests.Domain
             // Arrange
             var service = new Service("Troca de Óleo",
                 "Serviço de troca de óleo para veículos.",
-                150, Guid.NewGuid(), Category.Mecânico);
+                150, Guid.NewGuid(), Category.Mecânico, "São Paulo");
             var novaCategoria = Category.Mecânico; // Mesma categoria
             // Act & Assert
 

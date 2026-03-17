@@ -29,6 +29,9 @@ namespace QUS.Services.Data.Mappings
             builder.Property(x => x.Price)
                 .IsRequired();
 
+            builder.Property(x => x.City)
+                .IsRequired();
+
             builder.Property(x => x.Category)
                 .IsRequired()
                 .HasConversion(
