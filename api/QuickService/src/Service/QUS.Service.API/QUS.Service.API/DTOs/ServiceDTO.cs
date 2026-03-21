@@ -2,10 +2,10 @@
 {
     public class ServiceDTO
     {
-        public string Title { get; }
-        public string Description { get; }
-        public decimal Price { get; }
-        public string Category { get; }
-        public string City { get; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public decimal Price { get; set; }
+        public string Category { get; set; }
+        public string City { get; set; }
     }
 }

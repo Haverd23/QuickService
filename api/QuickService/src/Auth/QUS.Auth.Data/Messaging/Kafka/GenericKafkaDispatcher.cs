@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using QUS.Auth.Application.Kafka.Events;
 using QUS.Core.IntegrationEvent;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace QUS.Auth.Data.Messaging.Kafka
         {
             _serviceProvider = serviceProvider;
 
-            _eventTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => t.Name.EndsWith("Event"))
-            .ToDictionary(t => t.Name, t => t);
+            var assembly = typeof(AuthCreatedEvent).Assembly;
+
+            _eventTypes = assembly
+                .GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith("Event"))
+                .ToDictionary(t => t.Name, t => t);
         }
 
 

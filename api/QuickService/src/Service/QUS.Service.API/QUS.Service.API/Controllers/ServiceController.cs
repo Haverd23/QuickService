@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using QUS.Core.Mediator.Commands;
 using QUS.Service.API.DTOs;
 using QUS.Service.Application.Commands;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace QUS.Service.API.Controllers
@@ -19,10 +20,14 @@ namespace QUS.Service.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ServiceDTO commandDTO)
         {
-            var idString = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var idString =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
+                User.FindFirst(JwtRegisteredClaimNames.NameId)?.Value ??
+                User.FindFirst("nameid")?.Value;
+
             if (!Guid.TryParse(idString, out Guid userId))
             {
-                return Unauthorized("Id do usuário inválido no token.");
+                return Unauthorized(new { message = "Id do usuário inválido no token." });
             }
             var command = new CreateServiceCommand(
                 commandDTO.Title,

@@ -20,6 +20,8 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddDependencyInjection(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
 
 var app = builder.Build();
 app.UseCors("CORS");
@@ -29,7 +31,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
