@@ -8,5 +8,7 @@ namespace QUS.Services.Domain.Interfaces
     {
         Task AddAsync(Service service);
         Task GetUserIdAsync(Guid serviceId);
+        Task<IEnumerable<Service>> GetAllAsync();
+        
     }
 }

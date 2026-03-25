@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QUS.Core.Mediator.Commands;
+using QUS.Core.Mediator.Queries;
 using QUS.Service.Application.Commands;
+using QUS.Service.Application.DTOs;
+using QUS.Service.Application.Queries;
+using QUS.Service.Application.QueriesHandlers;
 using QUS.Service.Application.Service;
 using QUS.Services.Application.CommandsHandlers;
 using QUS.Services.Data;
@@ -22,6 +26,8 @@ namespace QUS.Service.API.Extensions
             // Application
             services.AddScoped<ICommandHandler<CreateServiceCommand, Guid>, CreateServiceCommandHandler>();
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
+            services.AddScoped<IQueryDispatcher, QueryDispatcher>();
+            services.AddScoped<IQueryHandler<GetAllServicesQuery, IEnumerable<AllServicesDTO>>, GetAllServiceQueryHandler>();
 
             return services;
         }
