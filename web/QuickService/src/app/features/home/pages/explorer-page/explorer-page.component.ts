@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../auth/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ServicesApiService } from '../../../services/api/services-api.service';
+import { ServiceResponse } from '../../../services/interfaces/serviceResponseInterface';
 
 
 
@@ -14,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ExplorePageComponent implements OnInit {
   isLogged = false;
-  currentUserId = '1';
+  currentUserId = '';
 
   activeTab: 'mine' | 'others' = 'others';
 
@@ -22,87 +24,17 @@ export class ExplorePageComponent implements OnInit {
   selectedCategory = '';
   selectedCity = '';
 
-  myServices: any[] = [];
-  otherServices: any[] = [];
-  displayedServices: any[] = [];
+ allServices: ServiceResponse[] = [];
+  myServices: ServiceResponse[] = [];
+  otherServices: ServiceResponse[] = [];
+  displayedServices: ServiceResponse[] = [];
 
   currentPage = 1;
   pageSize = 6;
   totalItems = 0;
   totalPages = 0;
 
-  allServices = [
-    {
-      id: '1',
-      title: 'Manutenção automotiva',
-      description: 'Revisão e diagnóstico completo.',
-      category: 'Mecânica',
-      city: 'Recife',
-      ownerId: '1',
-      ownerName: 'Gabriel',
-      createdAt: 'Hoje'
-    },
-    {
-      id: '2',
-      title: 'Pintura residencial',
-      description: 'Pintura interna e externa.',
-      category: 'Pintura',
-      city: 'Olinda',
-      ownerId: '2',
-      ownerName: 'Carlos',
-      createdAt: 'Ontem'
-    },
-    {
-      id: '3',
-      title: 'Instalação elétrica',
-      description: 'Troca de tomadas, revisão elétrica e instalação de chuveiro.',
-      category: 'Elétrica',
-      city: 'Recife',
-      ownerId: '3',
-      ownerName: 'Fernanda',
-      createdAt: 'Hoje'
-    },
-    {
-      id: '4',
-      title: 'Limpeza pós-obra',
-      description: 'Limpeza completa de ambientes residenciais e comerciais.',
-      category: 'Limpeza',
-      city: 'Jaboatão',
-      ownerId: '4',
-      ownerName: 'Mariana',
-      createdAt: '2 dias atrás'
-    },
-    {
-      id: '5',
-      title: 'Suporte técnico',
-      description: 'Formatação, manutenção e instalação de programas.',
-      category: 'TI',
-      city: 'Recife',
-      ownerId: '1',
-      ownerName: 'Gabriel',
-      createdAt: 'Hoje'
-    },
-    {
-      id: '6',
-      title: 'Reparo hidráulico',
-      description: 'Conserto de vazamentos, torneiras e encanamentos.',
-      category: 'Hidráulica',
-      city: 'Olinda',
-      ownerId: '5',
-      ownerName: 'Rafael',
-      createdAt: 'Ontem'
-    },
-    {
-      id: '7',
-      title: 'Pintura comercial',
-      description: 'Pintura de fachadas e ambientes internos.',
-      category: 'Pintura',
-      city: 'Recife',
-      ownerId: '6',
-      ownerName: 'Juliana',
-      createdAt: 'Hoje'
-    }
-  ];
+  
 
   categories = [
     'Mecânica',
@@ -113,11 +45,23 @@ export class ExplorePageComponent implements OnInit {
     'Limpeza'
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private servicesService: ServicesApiService) {}
 
   ngOnInit(): void {
-    this.isLogged = this.authService.isLoggin();
+     this.isLogged = this.authService.isLoggin();
+    this.getServices();
+  }
+
+  getServices(): void {
+    this.servicesService.getPublicService().subscribe({
+  next: (services: ServiceResponse[]) => {
+    this.allServices = services;
     this.loadServices();
+  },
+  error: (error) => {
+    console.error('Erro ao buscar serviços', error);
+  }
+});
   }
 
   loadServices(): void {
@@ -153,7 +97,7 @@ export class ExplorePageComponent implements OnInit {
         ? this.myServices
         : this.otherServices;
 
-    let filtered = source.filter(service => {
+    const filtered = source.filter(service => {
       const matchesTerm =
         !term ||
         service.title.toLowerCase().includes(term) ||
@@ -214,7 +158,7 @@ export class ExplorePageComponent implements OnInit {
     }
   }
 
-  isOwner(service: any): boolean {
+  isOwner(service: ServiceResponse): boolean {
     return this.currentUserId === service.ownerId;
   }
 

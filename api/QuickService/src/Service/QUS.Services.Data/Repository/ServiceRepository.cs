@@ -2,6 +2,7 @@
 using QUS.Core.Data;
 using QUS.Services.Domain.Interfaces;
 using QUS.Services.Domain.Models;
+
 namespace QUS.Services.Data.Repository
 {
     public class ServiceRepository : IServiceRepository
@@ -21,9 +22,16 @@ namespace QUS.Services.Data.Repository
         {
            await _context.Services.Where(s => s.Id == serviceId).FirstOrDefaultAsync();
         }
+        public async Task<IEnumerable<Service>> GetAllAsync()
+        {
+           return await _context.Services.ToListAsync();
+
+        }
         public void Dispose()
         {
             _context?.Dispose();
         }
+
+       
     }
 }

@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QUS.Core.Mediator.Commands;
+using QUS.Core.Mediator.Queries;
 using QUS.Service.API.DTOs;
 using QUS.Service.Application.Commands;
+using QUS.Service.Application.DTOs;
+using QUS.Service.Application.Queries;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -13,10 +17,13 @@ namespace QUS.Service.API.Controllers
     public class ServiceController : ControllerBase
     {
         private readonly ICommandDispatcher _commandDispatcher;
-        public ServiceController(ICommandDispatcher commandDispatcher)
+        private readonly IQueryDispatcher _queryDispatcher;
+        public ServiceController(ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
         {
             _commandDispatcher = commandDispatcher;
+            _queryDispatcher = queryDispatcher;
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ServiceDTO commandDTO)
         {
@@ -40,6 +47,13 @@ namespace QUS.Service.API.Controllers
             );
             var serviceId = await _commandDispatcher.DispatchAsync<CreateServiceCommand, Guid>(command);
             return CreatedAtAction(nameof(Post), new { id = serviceId }, null);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var query = new GetAllServicesQuery();
+            var services = await _queryDispatcher.DispatchAsync<GetAllServicesQuery, IEnumerable<AllServicesDTO>>(query);
+            return Ok(services);
         }
     }
 }
