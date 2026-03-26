@@ -18,5 +18,8 @@ export class ServicesApiService {
   getPublicService(): Observable<ServiceResponse[]> {
   return this.http.get<ServiceResponse[]>(`${this.url}/service`);
 }
+  getPrivateService(): Observable<ServiceResponse[]>{
+    return this.http.get<ServiceResponse[]>(`${this.url}/service/private`)
+  }
 }
 
