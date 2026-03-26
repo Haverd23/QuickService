@@ -18,9 +18,9 @@ namespace QUS.Services.Data.Repository
         {
            await _context.Services.AddAsync(service);
         }
-        public async Task GetUserIdAsync(Guid serviceId)
+        public async Task<IEnumerable<Service>> GetServiceByProvider(Guid serviceId)
         {
-           await _context.Services.Where(s => s.Id == serviceId).FirstOrDefaultAsync();
+           return await _context.Services.Where(s => s.ProviderId == serviceId).ToListAsync();
         }
         public async Task<IEnumerable<Service>> GetAllAsync()
         {

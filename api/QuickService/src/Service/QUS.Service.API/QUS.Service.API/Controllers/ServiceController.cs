@@ -55,5 +55,21 @@ namespace QUS.Service.API.Controllers
             var services = await _queryDispatcher.DispatchAsync<GetAllServicesQuery, IEnumerable<AllServicesDTO>>(query);
             return Ok(services);
         }
+        [HttpGet("private")]
+        public async Task<IActionResult> GetPrivate()
+        {
+            var idString =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
+                User.FindFirst(JwtRegisteredClaimNames.NameId)?.Value ??
+                User.FindFirst("nameid")?.Value;
+
+            if (!Guid.TryParse(idString, out Guid userId))
+            {
+                return Unauthorized(new { message = "Id do usuário inválido no token." });
+            }
+            var query = new GetPrivateServicesQuery(userId);
+            var services = await _queryDispatcher.DispatchAsync<GetPrivateServicesQuery, IEnumerable<AllServicesDTO>>(query);
+            return Ok(services);
+        }
     }
 }

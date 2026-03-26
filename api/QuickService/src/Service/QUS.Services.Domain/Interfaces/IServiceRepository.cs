@@ -7,7 +7,8 @@ namespace QUS.Services.Domain.Interfaces
     public interface IServiceRepository : IRepository<Service>
     {
         Task AddAsync(Service service);
-        Task GetUserIdAsync(Guid serviceId);
+
+        Task <IEnumerable<Service>> GetServiceByProvider(Guid serviceId);
         Task<IEnumerable<Service>> GetAllAsync();
         
     }

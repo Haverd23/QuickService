@@ -28,6 +28,7 @@ namespace QUS.Service.API.Extensions
             services.AddScoped<ICommandDispatcher, CommandDispatcher>();
             services.AddScoped<IQueryDispatcher, QueryDispatcher>();
             services.AddScoped<IQueryHandler<GetAllServicesQuery, IEnumerable<AllServicesDTO>>, GetAllServiceQueryHandler>();
+            services.AddScoped<IQueryHandler<GetPrivateServicesQuery, IEnumerable<AllServicesDTO>>, GetPrivateServicesQueryHandler>();
 
             return services;
         }

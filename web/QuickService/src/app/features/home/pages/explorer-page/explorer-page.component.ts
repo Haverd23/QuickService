@@ -16,7 +16,6 @@ import { ServiceResponse } from '../../../services/interfaces/serviceResponseInt
 })
 export class ExplorePageComponent implements OnInit {
   isLogged = false;
-  currentUserId = '';
 
   activeTab: 'mine' | 'others' = 'others';
 
@@ -24,7 +23,6 @@ export class ExplorePageComponent implements OnInit {
   selectedCategory = '';
   selectedCity = '';
 
- allServices: ServiceResponse[] = [];
   myServices: ServiceResponse[] = [];
   otherServices: ServiceResponse[] = [];
   displayedServices: ServiceResponse[] = [];
@@ -33,8 +31,6 @@ export class ExplorePageComponent implements OnInit {
   pageSize = 6;
   totalItems = 0;
   totalPages = 0;
-
-  
 
   categories = [
     'Mecânica',
@@ -45,39 +41,43 @@ export class ExplorePageComponent implements OnInit {
     'Limpeza'
   ];
 
-  constructor(private authService: AuthService, private servicesService: ServicesApiService) {}
+  constructor(
+    private authService: AuthService,
+    private servicesService: ServicesApiService
+  ) {}
 
   ngOnInit(): void {
-     this.isLogged = this.authService.isLoggin();
-    this.getServices();
-  }
+    this.isLogged = this.authService.isLoggin();
 
-  getServices(): void {
-    this.servicesService.getPublicService().subscribe({
-  next: (services: ServiceResponse[]) => {
-    this.allServices = services;
-    this.loadServices();
-  },
-  error: (error) => {
-    console.error('Erro ao buscar serviços', error);
-  }
-});
-  }
+    this.getPublicServices();
 
-  loadServices(): void {
-    this.myServices = this.allServices.filter(
-      service => service.ownerId === this.currentUserId
-    );
-
-    this.otherServices = this.allServices.filter(
-      service => service.ownerId !== this.currentUserId
-    );
-
-    if (!this.isLogged) {
-      this.activeTab = 'others';
+    if (this.isLogged) {
+      this.getMyServices();
     }
+  }
 
-    this.applyFilters();
+  getPublicServices(): void {
+    this.servicesService.getPublicService().subscribe({
+      next: (services: ServiceResponse[]) => {
+        this.otherServices = services;
+        this.applyFilters();
+      },
+      error: (error) => {
+        console.error('Erro ao buscar serviços públicos', error);
+      }
+    });
+  }
+
+  getMyServices(): void {
+    this.servicesService.getPrivateService().subscribe({
+      next: (services: ServiceResponse[]) => {
+        this.myServices = services;
+        this.applyFilters();
+      },
+      error: (error) => {
+        console.error('Erro ao buscar meus serviços', error);
+      }
+    });
   }
 
   setActiveTab(tab: 'mine' | 'others'): void {
@@ -156,10 +156,6 @@ export class ExplorePageComponent implements OnInit {
       this.currentPage--;
       this.applyFilters();
     }
-  }
-
-  isOwner(service: ServiceResponse): boolean {
-    return this.currentUserId === service.ownerId;
   }
 
   editService(serviceId: string): void {
