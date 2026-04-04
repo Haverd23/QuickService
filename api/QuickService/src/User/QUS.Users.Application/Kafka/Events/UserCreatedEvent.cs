@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace QUS.Users.Application.Kafka.Events
 {
-    public class AuthCreatedEvent : ApplicationEvent
+    public class UserCreatedEvent : ApplicationEvent
     {
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
-        public Guid AuthId { get; set; }
-
-       
+        public UserCreatedEvent(string email, string name)
+        {
+            Email = email;
+            Name = name;
+        }
+    
     }
 }
