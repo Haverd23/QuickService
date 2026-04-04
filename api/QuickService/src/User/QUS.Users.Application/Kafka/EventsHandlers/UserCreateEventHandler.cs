@@ -50,6 +50,8 @@ namespace QUS.Users.Application.Kafka.EventsHandlers
                 {
                     await PublishFailure(evento.AuthId);
                 }
+                await PublishSuccess(evento.Email, evento.Name);
+
             }
             catch
             {
@@ -68,6 +70,17 @@ namespace QUS.Users.Application.Kafka.EventsHandlers
             await _eventBus.PublishAsync(
                 topic,
                 userFailed.EventId.ToString(),
+                payload
+            );
+        }
+        private async Task PublishSuccess(string email, string name)
+        {
+            var userCreated = new UserCreatedEvent(email,name);
+            var topic = userCreated.EventType;
+            var payload = JsonSerializer.Serialize(userCreated);
+            await _eventBus.PublishAsync(
+                topic,
+                userCreated.EventId.ToString(),
                 payload
             );
         }

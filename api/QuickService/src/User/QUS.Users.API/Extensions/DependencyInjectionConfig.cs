@@ -36,6 +36,7 @@ namespace QUS.Users.API.Extensions
             services.AddSingleton<GenericKafkaDispatcher>();
             
             services.AddScoped<IIntegrationEventHandler<AuthCreatedEvent>, UserCreateEventHandler>();
+
             services.AddSingleton(sp =>
             {
                 var kafkaSection = configuration.GetSection("Kafka");
