@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using QUS.Service.API.Extensions;
+using QUS.Services.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
