@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using QUS.Service.API.Extensions;
+using QUS.Services.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +24,16 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 
 
 
+
+
 var app = builder.Build();
 app.UseCors("CORS");
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ServiceDbContext>();
+    context.Database.Migrate();
+}
 
 
 // Configure the HTTP request pipeline.
