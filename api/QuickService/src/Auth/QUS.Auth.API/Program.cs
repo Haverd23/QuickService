@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using QUS.Auth.API.Extensions;
+using QUS.Auth.Data;
 using QUS.Core.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +13,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CORS", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200",
+                            "http://localhost"
+)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
