@@ -26,6 +26,12 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 var app = builder.Build();
 app.UseCors("CORS");
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+    context.Database.Migrate();
+}
+
 
 app.UseMiddleware<ExceptionMiddleware>();
 
