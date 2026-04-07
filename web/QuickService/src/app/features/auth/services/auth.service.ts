@@ -7,12 +7,13 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { LoginInterface } from '../interfaces/loginInterface';
 import { LoginResponse } from '../interfaces/loginResponse';
+import { environment } from '../../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private url = 'http://localhost:5298/Auth';
+  private url = `${environment.auth}/Auth`;
   private userPayload: any;
   private platformId = inject(PLATFORM_ID);
 
