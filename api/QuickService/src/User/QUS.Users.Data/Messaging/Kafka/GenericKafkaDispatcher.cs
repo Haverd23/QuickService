@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using QUS.Core.IntegrationEvent;
+using QUS.Users.Application.Kafka.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,12 @@ namespace QUS.Users.Data.Messaging.Kafka
         {
             _serviceProvider = serviceProvider;
 
-            _eventTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => t.Name.EndsWith("Event"))
-            .ToDictionary(t => t.Name, t => t);
+            var assembly = typeof(UserCreatedEvent).Assembly;
+
+            _eventTypes = assembly
+                .GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract && t.Name.EndsWith("Event"))
+                .ToDictionary(t => t.Name, t => t);
         }
 
 

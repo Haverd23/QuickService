@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QUS.User.Domain\QUS.Users.Domain.csproj" />
+    <ProjectReference Include="..\QUS.Users.Application\QUS.Users.Application.csproj" />
   </ItemGroup>
 
 </Project>
