@@ -22,11 +22,14 @@ namespace QUS.Users.API.Extensions
         {
             // Data
           services.AddScoped<IUserRepository, UserRepository>();
-          services.AddDbContext<UserDbContext>(options => 
-          options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            var connectionString =
+               configuration["DEFAULT_CONNECTION"] ??
+               configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<UserDbContext>(options =>
+              options.UseSqlServer(connectionString));
 
             // Application
-          services.AddScoped<ICommandHandler<CreateUserCommand, Guid>, CreateUserCommandHandler>();
+            services.AddScoped<ICommandHandler<CreateUserCommand, Guid>, CreateUserCommandHandler>();
           services.AddScoped<ICommandDispatcher, CommandDispatcher>();
 
             services.AddSingleton<IEventBus, KafkaEventBus>();

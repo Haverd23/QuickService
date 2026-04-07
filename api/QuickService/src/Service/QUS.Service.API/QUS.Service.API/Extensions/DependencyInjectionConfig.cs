@@ -20,8 +20,12 @@ namespace QUS.Service.API.Extensions
         {
             // Data
             services.AddScoped<IServiceRepository, ServiceRepository>();
+            var connectionString =
+             configuration["DEFAULT_CONNECTION"] ??
+             configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<ServiceDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+              options.UseSqlServer(connectionString));
 
             // Application
             services.AddScoped<ICommandHandler<CreateServiceCommand, Guid>, CreateServiceCommandHandler>();

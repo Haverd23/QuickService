@@ -28,9 +28,12 @@ namespace QUS.Auth.API.Extensions
         {
             // Data
             services.AddScoped<IAuthRepository, AuthRepository>();
-            services.AddDbContext<AuthDbContext>((options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))));
+            var connectionString =
+             configuration["DEFAULT_CONNECTION"] ??
+             configuration.GetConnectionString("DefaultConnection");
 
+            services.AddDbContext<AuthDbContext>(options =>
+                options.UseSqlServer(connectionString));
             // Application
             services.AddScoped<ICommandHandler<UserCreateCommand, Guid>,
                 UserCreateCommandHandler>();
@@ -55,7 +58,7 @@ namespace QUS.Auth.API.Extensions
 
                 return new ProducerConfig
                 {
-                    BootstrapServers = kafkaSection["BootstrapServers"],
+                    BootstrapServers = configuration["Kafka:BootstrapServers"],
                     Acks = Acks.All,
                     EnableIdempotence = producerSection.GetValue<bool>("EnableIdempotence"),
                     LingerMs = producerSection.GetValue<int>("LingerMs"),
