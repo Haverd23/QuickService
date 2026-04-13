@@ -3,6 +3,7 @@ import { CardsComponent } from "../../components/cards/cards.component";
 import { CategoryComponent } from "../../components/category/category.component";
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/services/auth.service';
+import { AuthStoreService } from '../../../auth/services/auth.store.service';
 
 @Component({
   selector: 'app-home-page',
@@ -14,7 +15,7 @@ import { AuthService } from '../../../auth/services/auth.service';
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent implements OnInit {
-constructor(private authService : AuthService) { }
+constructor(private authStore: AuthStoreService) { }
 isLogged = false;
 categories = [
   { icon: '🔧', title: 'Mecânica' },
@@ -25,7 +26,9 @@ categories = [
   { icon: '🧹', title: 'Limpeza' }
 ];
 ngOnInit(): void {
-      this.isLogged = this.authService.isLoggin();
-    
+   this.authStore.getIsLogged().subscribe(value => {
+      this.isLogged = value;
+    });
+
 }
 }

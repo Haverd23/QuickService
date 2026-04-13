@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RegistrationService } from '../../../../core/workflows/registration/service/registration.service';
 import { AuthService } from '../../services/auth.service';
+import { AuthStoreService } from '../../services/auth.store.service';
 
 interface FormField {
   type: string;
@@ -20,7 +27,6 @@ interface FormField {
   styleUrl: './auth-pages.component.css'
 })
 export class AuthPageComponent implements OnInit {
-
   apiError: string = '';
   form!: FormGroup;
 
@@ -34,13 +40,15 @@ export class AuthPageComponent implements OnInit {
   linkButtonText = '';
   linkUrl = '';
 
-  displayPhone: string = ''; // apenas para exibição no input
+  displayPhone: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private registrationService: RegistrationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private authStore: AuthStoreService
   ) {}
 
   ngOnInit(): void {
@@ -96,70 +104,105 @@ export class AuthPageComponent implements OnInit {
     this.linkUrl = '/login';
   }
 
-submit() {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
+  submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-  const type = this.route.snapshot.data['type'];
-
-  if (type === 'register') {
+    const type = this.route.snapshot.data['type'];
     const formValue = this.form.value;
 
-    this.authService.checkEmailExists(formValue.email).subscribe({
-      next: (response: any) => {
-
-        if (response.exists) {
-          this.apiError = 'Este e-mail já está registrado.';
-          return;
-        }
-
-        this.registrationService.register(formValue).subscribe({
-          next: (response) => {
-            console.log('Usuário registrado com sucesso!', response);
-            this.apiError = '';
-          },
-          error: (err) => {
-            console.error('Erro ao registrar', err);
-
-            if (err.error?.message) {
-              this.apiError = err.error.message;
-            } else {
-              this.apiError = 'Erro inesperado ao registrar usuário.';
-            }
+    if (type === 'register') {
+      this.authService.checkEmailExists(formValue.email).subscribe({
+        next: (response: any) => {
+          if (response.exists) {
+            this.apiError = 'Este e-mail já está registrado.';
+            return;
           }
-        });
 
-      },
-      error: (err) => {
-        console.error('Erro ao verificar email', err);
-        this.apiError = 'Erro ao verificar e-mail.';
-      }
-    });
+          this.registrationService.register(formValue).subscribe({
+            next: () => {
+              this.apiError = '';
+
+              const loginData = {
+                email: formValue.email,
+                password: formValue.password
+              };
+
+              setTimeout(() => {
+                this.authService.login(loginData).subscribe({
+                  next: (loginResponse: any) => {
+                    const token =
+                      loginResponse?.token ??
+                      loginResponse?.Token ??
+                      loginResponse?.accessToken ??
+                      loginResponse?.jwt;
+
+                    if (!token) {
+                      this.apiError = 'Login retornou sucesso, mas sem token.';
+                      return;
+                    }
+
+                    this.authService.storeToken(token);
+                    this.authStore.setIsLogged(true);
+                    this.authStore.setEmail(formValue.email);
+                    this.apiError = '';
+                    this.router.navigate(['/explorar']);
+                  },
+                  error: (err) => {
+                    this.apiError =
+                      err?.error?.message ??
+                      'Usuário criado com sucesso, mas houve erro no login automático.';
+                  }
+                });
+              }, 1500);
+            },
+            error: (err) => {
+              if (err.error?.message) {
+                this.apiError = err.error.message;
+              } else {
+                this.apiError = 'Erro inesperado ao registrar usuário.';
+              }
+            }
+          });
+        },
+        error: () => {
+          this.apiError = 'Erro ao verificar e-mail.';
+        }
+      });
+    } else {
+      const loginData = {
+        email: formValue.email,
+        password: formValue.password
+      };
+
+      this.authService.login(loginData).subscribe({
+        next: (response: any) => {
+          const token =
+            response?.token ??
+            response?.Token ??
+            response?.accessToken ??
+            response?.jwt;
+
+          if (!token) {
+            this.apiError = 'Login retornou sucesso, mas sem token.';
+            return;
+          }
+
+          this.authService.storeToken(token);
+          this.authStore.setIsLogged(true);
+          this.authStore.setEmail(formValue.email);
+          this.apiError = '';
+          this.router.navigate(['/explorar']);
+        },
+        error: (err) => {
+          this.apiError = err?.error?.message ?? 'Erro ao fazer login.';
+        }
+      });
+    }
   }
-  else{
-    const formValue = this.form.value;
 
-    this.authService.login(formValue).subscribe({
-      next: (response) => {
-        this.authService.storeToken(response.token);
-        console.log('Login bem-sucedido!', response);
-        this.apiError = '';
-      },
-      error: (err) => {
-        console.error('Erro ao fazer login', err);
-        this.apiError = 'Erro ao fazer login.';
-      }
-    });
-
-  }
-}
-
-
-  // -------------------------
-  // VALIDADOR POR CAMPO
-  // -------------------------
   getValidators(field: string) {
     switch (field) {
       case 'name':
@@ -181,24 +224,20 @@ submit() {
     }
   }
 
-  // -------------------------
-  // VALIDADOR DE CONFIRMAÇÃO DE SENHA
-  // -------------------------
   passwordMatchValidator(form: AbstractControl): ValidationErrors | null {
     const password = form.get('password')?.value;
     const confirm = form.get('confirmPassword')?.value;
+
     if (!password || !confirm) return null;
 
     if (password !== confirm) {
       form.get('confirmPassword')?.setErrors({ passwordMismatch: true });
       return { passwordMismatch: true };
     }
+
     return null;
   }
 
-  // -------------------------
-  // FORMATAÇÃO DO TELEFONE PARA EXIBIÇÃO
-  // -------------------------
   onPhoneInput(event: any) {
     let rawValue = event.target.value.replace(/\D/g, '');
     if (rawValue.length > 11) rawValue = rawValue.slice(0, 11);

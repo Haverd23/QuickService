@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ServicesApiService } from '../../../services/api/services-api.service';
 import { ServiceResponse } from '../../../services/interfaces/serviceResponseInterface';
+import { AuthStoreService } from '../../../auth/services/auth.store.service';
 
 
 
@@ -42,12 +43,15 @@ export class ExplorePageComponent implements OnInit {
   ];
 
   constructor(
-    private authService: AuthService,
-    private servicesService: ServicesApiService
+    private servicesService: ServicesApiService,
+    private authStore: AuthStoreService,
+
   ) {}
 
   ngOnInit(): void {
-    this.isLogged = this.authService.isLoggin();
+    this.authStore.getIsLogged().subscribe(value => {
+      this.isLogged = value;
+    });
 
     this.getPublicServices();
 
