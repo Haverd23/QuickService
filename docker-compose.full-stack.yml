@@ -123,6 +123,8 @@ services:
         condition: service_healthy
       broker:
         condition: service_healthy
+      qus-users-api:
+        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       DEFAULT_CONNECTION: ${DEFAULT_CONNECTION}
@@ -143,6 +145,8 @@ services:
         condition: service_healthy
       broker:
         condition: service_healthy
+      qus-auth-api:
+        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       DEFAULT_CONNECTION: ${DEFAULT_CONNECTION}
