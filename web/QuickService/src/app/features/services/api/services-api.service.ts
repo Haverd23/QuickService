@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CreateServiceInterface } from '../interfaces/createServiceInterface';
 import { Observable } from 'rxjs';
 import { ServiceResponse } from '../interfaces/serviceResponseInterface';
-import { environment } from '../../../../environments/environment.prod';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,10 @@ export class ServicesApiService {
     return this.http.post<void>(this.url, dto);
 }
   getPublicService(): Observable<ServiceResponse[]> {
-  return this.http.get<ServiceResponse[]>(`${this.url}/service`);
+  return this.http.get<ServiceResponse[]>(`${this.url}`);
 }
   getPrivateService(): Observable<ServiceResponse[]>{
-    return this.http.get<ServiceResponse[]>(`${this.url}/service/private`)
+    return this.http.get<ServiceResponse[]>(`${this.url}/private`)
   }
 }
 
